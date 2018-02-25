@@ -5,7 +5,15 @@
         <div class="el_inform" @click="seeinform">活动详情>></div>
       </div>
     </div>
-    <Times></Times>
+    <div class="el_right">
+      <div class="el_timeTxt">距结束</div>
+      <ul class="el_btg_time">
+        <li class="el_timeDay">{{ $store.state.day }}天</li>
+        <li class="el_timeH">{{ $store.state.hour }}</li>
+        <li class="el_timeM">{{ $store.state.minute }}</li>
+        <li class="el_timeS">{{ $store.state.second }}</li>
+      </ul>
+    </div>
     <div class="el_navs" id="navs">
       <ul class="clear" ref="mybox">
         <li :class="{active: active == index}" @click="check(index, item.id)" v-for='(item, index) in clas' :key="index">{{ item.categoryName }}</li>
@@ -82,7 +90,6 @@
 </template>
 <script>
   import Banner from '../components/banner'
-  import Times from '../components/times'
   import Btn from '../components/button'
   import Load from '../components/load'
   import filter from '../assets/js/filter'
@@ -102,14 +109,10 @@
         show2: true,
         goodss: [],
         alldata: [],
-        historylist : [],//第一次请求的数据
         allLoaded: false,//true禁止下拉刷新
         autoFill: false,//若为真，loadmore 会自动检测并撑满其容器
         currentpageNum: 1,//当前页数
         totalNum: 3,//总页数
-        bottomStatus: '',//当前状态
-        bottomPullText: '上拉加载更多...',
-        bottomDropText: '释放更新...'
       }
     },
     async asyncData () {
@@ -144,7 +147,7 @@
         title: '拼团购'
       }
     },
-    components: { Banner, Times, Btn, Load },
+    components: { Banner, Btn, Load },
     mounted () {
       let self = this
       let elWidth = 0
@@ -169,7 +172,8 @@
         self.isShow = false
         filter.flter('box', false)
       }, Math.random() * 1000)
-//      document.getElementsByClassName('mint-loadmore-bottom')[0].innerHTML = '没有更多啦！下拉刷新试试！'
+      //开始倒计时
+      this.start()
     },
     methods: {
       check: function (e, att) {
@@ -224,6 +228,8 @@
                   curtext = self.clas[i].id
                 }
               }
+              // 更新一下所有数据，因为这里刷新了一下，而前面的alldata是进来就请求的数据，需要更新
+              self.alldata = response.data
               self.goodss = response.data[curtext]
               self.$refs.loadmore.onTopLoaded()
             })
@@ -267,6 +273,14 @@
       },
       handleBottomChange: function (status){
         this.bottomStatus = status;//实时更新上拉状态
+      },
+      start: function () {
+        let data = { 'day':1, 'hour':1, 'minute':1, 'second':1 }// 请求得到的时间
+        this.$store.state.day = data.day
+        this.$store.state.hour = data.hour
+        this.$store.state.minute = data.minute
+        this.$store.state.second = data.second// 改变store里面的时分秒数据
+        this.$store.commit('increment') // 提交
       }
     }
 }

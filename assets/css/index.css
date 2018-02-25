@@ -280,3 +280,49 @@ li {
   border-bottom: 1px solid #ffffff;
   padding: 40px 20px;
 }
+
+.el_right {
+  padding: 18px 28px 18px 0;
+  float: right;
+}
+.el_timeTxt {
+  display: inline-block;
+  font-size: 24px;
+  vertical-align: middle;
+  color: #d95c34;
+}
+.el_btg_time {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+}
+.el_btg_time>li:first-child {
+  width: 60px;
+  margin-left: 6px;
+}
+.el_btg_time>li {
+  text-align: center;
+  color: #fff;
+  margin-left: 18px;
+  float: left;
+  display: block;
+  position: relative;
+  height: 40px;
+  line-height: 40px;
+  background-color: #ea512f;
+  border-radius: 6px;
+  width: 40px;
+  box-sizing: border-box;
+  font-size: 18px;
+}
+li {
+  list-style: none;
+}
+.el_btg_time>li:after {
+  color: #000;
+  content: ":";
+  display: block;
+  position: absolute;
+  top: -2px;
+  right: -10px;
+}
