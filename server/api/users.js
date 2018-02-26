@@ -2,6 +2,7 @@ import { Router } from 'express'
 import request from 'request'
 import nuxtSchema from '../../db/nuxtserrver'
 import Mock from 'mockjs'
+
 let Random = Mock.Random
 let nuxtlist = nuxtSchema.nuxtlist
 let tslist = nuxtSchema.tslist
@@ -219,6 +220,12 @@ router.get('/gettest', (req, res, next) => {
     }]
   })
   res.json(data)
+})
+
+router.post('/posttest',(req, res, next) => {
+  // req.headers['content-type'] = "application/x-www-form-urlencoded"
+  console.log('333333333333:', req.body)
+  res.send('1')
 })
 
 export default router

@@ -176,23 +176,23 @@
       this.start()
     },
     methods: {
-      check: function (e, att) {
+      check: function (e, att) {// 顶部导航切换
         this.active = e
         // 动态的属性名不能用点的，要data[att]这样调用！！！！！！坑！ 因为所有数据都已经请求过来了，所以直接用，不用再发请求!!!
         this.goodss = this.alldata[att]
         this.allLoaded = false
         this.currentpageNum = 1
       },
-      seeinform: function () {
+      seeinform: function () {// 活动规则与模态框显示
         this.data1 = true
         this.data3 = true
       },
-      cloose: function () {
+      cloose: function () {// 关闭所有弹出框
         this.data1 = false
         this.data2 = false
         this.data3 = false
       },
-      openwin1: function (e) {
+      openwin1: function (e) {// 引导  参团 我的团 按钮点击事件
 //        console.log('123:', e.target.innerText)
         if (e.target.innerText === '引导') {
           this.data1 = true
@@ -203,16 +203,16 @@
           location.href = '/myGroups'
         }
       },
-      gotuan: function () {
+      gotuan: function () {// 去开团按钮点击
         location.href = 'success'
       },
-      cantuan: function () {
+      cantuan: function () {// 参团按钮点击
         location.href = 'participate'
       },
-      goDetail: function () {
+      goDetail: function () {// 跳转到商品详情页
         location.href = 'groupDetails'
       },
-      loadTop: function () {
+      loadTop: function () {// 到顶部后的下拉刷新
         //下拉刷新
         let self = this
         this.currentpageNum = 1
@@ -231,6 +231,7 @@
               // 更新一下所有数据，因为这里刷新了一下，而前面的alldata是进来就请求的数据，需要更新
               self.alldata = response.data
               self.goodss = response.data[curtext]
+              // 这一步很重要  不然无法实时切换loading状态 到 pull的状态
               self.$refs.loadmore.onTopLoaded()
             })
             .catch(function(err){
@@ -238,7 +239,7 @@
             })
         }, 500)
       },
-      loadBottom: function () {
+      loadBottom: function () {// 到底部后的上拉加载分页
         // 加载更多数据 加载完成时的事件
         this.currentpageNum++
 //        console.log('this.current1:', this.currentpageNum)
@@ -271,10 +272,10 @@
             })
         }, 500)
       },
-      handleBottomChange: function (status){
-        this.bottomStatus = status;//实时更新上拉状态
+      handleBottomChange: function (status){// 实时更新拖动状态
+        this.bottomStatus = status;
       },
-      start: function () {
+      start: function () {// 倒计时
         let data = { 'day':1, 'hour':1, 'minute':1, 'second':1 }// 请求得到的时间
         this.$store.state.day = data.day
         this.$store.state.hour = data.hour

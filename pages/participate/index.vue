@@ -1,26 +1,30 @@
 <template>
 <div id="participate">
   <div class="el_choose">选择团长，参团吧</div>
-  <div class="el_content">
-    <div class="el_goods" v-for="(item, index) in goodss" :key="index">
-      <div class="el_img">
-        <img :src="item.spellImg" alt="">
+  <div class="main-body">
+    <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" @bottom-status-change="handleBottomChange" :auto-fill="autoFill">
+      <div class="el_content">
+        <div class="el_goods" v-for="(item, index) in goodss" :key="index">
+          <div class="el_img">
+            <img :src="item.photo" alt="">
+          </div>
+          <div class="el_bewrite">
+            <ul>
+              <li>{{ item.title }}</li>
+              <li>
+                团长:
+                <span>{{ item.nickName }}</span>
+              </li>
+              <li>
+                <span>{{ item.joinNum }}人参团</span>
+                <span class="el_btn" @click="goct">去参团</span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="el_bewrite">
-        <ul>
-          <li>{{ item.spellName }}</li>
-          <li>
-            团长:
-            <span>{{ item.headName }}</span>
-          </li>
-          <li>
-            <span>{{ item.joinSpellNum }}人参团</span>
-            <span class="el_btn" @click="goct">去参团</span>
-          </li>
-        </ul>
-      </div>
+    </mt-loadmore>
     </div>
-  </div>
   <div class="el_dailog" v-show="data1">
     <div class="el_window" ref="dailog">
       <div class="el_cloose" @click="cloose">x</div>
@@ -40,21 +44,50 @@
   import axios from 'axios'
   import Load from '../../components/load'
   import filter from '../../assets/js/filter'
+  import qs from  'qs'
   export default {
     data () {
       return {
         goodss: {},
         data1: false,
-        isShow: true
+        isShow: true,
+        allLoaded: false,//true禁止下拉刷新
+        autoFill: false,//若为真，loadmore 会自动检测并撑满其容器
+        currentpageNum: 1,//当前页数
+        totalNum: 3,//总页数
       }
     },
     async asyncData () {
-      return axios.get('http://127.0.0.1:3222/api/getGroupList')
-        .then((res) => {
+      //定义参数
+      let params = {
+        activityId : 'SYM',
+        buyerId : '123',
+        pageIndex: 1,
+        pageSize: 2,
+        shopId: 'wqeq',
+        storeId: 'qwe'
+      }
+
+      return axios({
+        method: 'POST',
+        url: 'http://172.30.3.40:9086/mockjsdata/5/spell/getTeamList',
+        data: params
+      })
+        .then(function(response) {
+//          console.log(response.data.data.teamList);
           return {
-            goodss: res.data.data
+            goodss: response.data.data.teamList
           }
         })
+        .catch(function(error) {
+          console(error)
+        })
+//      return axios.get('http://127.0.0.1:3222/api/getGroupList')
+//        .then((res) => {
+//          return {
+//            goodss: res.data.data
+//          }
+//        })
     },
     methods: {
       goct: function () {
@@ -67,6 +100,28 @@
       },
       gosee: function () {
         location.href = 'boon'
+      },
+      loadTop: function () {// 到顶部后的下拉刷新
+        //下拉刷新
+        let self = this
+        this.currentpageNum = 1
+        this.allLoaded = false
+        setTimeout (() => {
+          self.$refs.loadmore.onTopLoaded()
+        }, 500)
+      },
+      loadBottom: function () {// 到底部后的上拉加载分页
+        // 加载更多数据 加载完成时的事件
+        this.currentpageNum++
+//        console.log('this.current1:', this.currentpageNum)
+        let self = this
+        setTimeout(() => {
+          self.$refs.loadmore.onBottomLoaded()
+        }, 500)
+      },
+      handleBottomChange: function (status){// 实时更新拖动状态
+        console.log(status)
+        this.bottomStatus = status;
       }
     },
     mounted () {

@@ -9,7 +9,7 @@
 		<div class="content">
 			<!--子组件，显示不同的 tab   is 特性动态绑定子组件    keep-alive 将切换出去的组件保留在内存中-->
 			<!--拼团进行中-->
-			<underWay :is="currentTab" :hide='hide' :hideBtn='hideBtn' keep-alive></underWay>
+			<underWay :is="currentTab" :hide='hide' :hideBtn='hideBtn'></underWay>
 			<!--拼团成功-->
 			<!--<fightSuccess/>-->
 		</div>

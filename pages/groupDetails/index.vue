@@ -84,6 +84,20 @@
         </div>
       </div>
     </div>
+    <div class="float_nav">
+      <a class="control" href="javascript:void(0)">
+        <span class="n1">导航</span>
+        <span class="n2"></span>
+      </a>
+      <a class="gwc" href="javascript:void(0)" style="top: -180px;">
+        <div class="gwc_info" hidden="hidden" style="display: block;">
+          <p>共<em id="car_count">1</em>件</p>
+          <p><em>￥</em><em id="car_money">99999</em></p>
+        </div>
+        <span></span>
+      </a>
+      <a id="consultBtn" href="javascript:void(0)" class="consult_btn box-size hide_new" style="display: inline;">咨询</a>
+    </div>
     <!--子组件  对showdia的值进行v-bind动态绑定  v-on监听子组件传给父组件的值 childtoparent这个一定要与子组件定义的名字一样-->
     <Dial :showdia="showdia" :Picurl="Picurl" :goodsName="goodsName" :headPrice="headPrice" :Attrdata="Attrdata" v-on:childtoparent="showchildmsg" v-on:childtoparent2="gettexts"></Dial>
     <Load v-show="isShow"></Load>
@@ -206,5 +220,93 @@
     width: 750px;
     height: 400px;
     margin: auto;
+  }
+
+  .float_nav {
+    position: fixed;
+    right: 9px;
+    bottom: 16%;
+    width: 85px;
+    font-size: 24px;
+    z-index: 100;
+  }
+  .float_nav a {
+    bottom: 0;
+    display: block;
+    position: absolute;
+    left: 0;
+    box-sizing: border-box;
+    width: 85px;
+    height: 85px;
+    text-align: center;
+    color: #00bf8e;
+  }
+  .float_nav a span.n1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .float_nav a span {
+    display: block;
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    border: 2px solid #e3e3e3;
+    line-height: 81px;
+    box-sizing: border-box;
+    background-color: #fff;
+    position: relative;
+    -webkit-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    -webkit-transition: all .3s;
+  }
+  .float_nav a span.n2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-transform: rotateY(180deg);
+  }
+  .float_nav a:last-child {
+    margin-bottom: -94px;
+  }
+  .float_nav a .gwc_info {
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    position: absolute;
+    top: 3px;
+    right: 43px;
+    height: 79px;
+    box-sizing: border-box;
+    padding: 8.5px 49px 8.5px 16px;
+    border-radius: 0 0 0 20px;
+    line-height: 31px;
+  }
+  .gwc:after {
+    content: '';
+    display: block;
+    width: 46px;
+    height: 46px;
+    background-image: url("../../assets/images/icon.png");
+    background-position: -404px -50px;
+    position: absolute;
+    top: 38%;
+    left: 36%;
+    margin: -11px 0 0 -11px;
+  }
+  .consult_btn {
+    display: inline-block;
+    line-height: 81px;
+    text-align: center;
+    color: #00bf8e;
+    font-size: 24px;
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    border: 2px solid #e3e3e3;
+    background-color: #fff;
+    position: fixed;
+    bottom: 120px;
+    right: 9px;
+    z-index: 59;
   }
 </style>

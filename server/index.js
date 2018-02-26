@@ -1,11 +1,16 @@
 import Nuxt from 'nuxt'
 import express from 'express'
+import bodyParser from 'body-parser'
+
 
 import api from './api'
 
 const app = express()
 const host = process.env.HOST
 const port = process.env.PORT || 3000
+
+//使用body 不然 req.body为undifined
+app.use(bodyParser.json())
 
 app.set('port', port)
 
