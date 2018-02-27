@@ -18,6 +18,7 @@
               <li>
                 <span>{{ item.joinNum }}人参团</span>
                 <span class="el_btn" @click="goct">去参团</span>
+                <input type="hidden" :value="item.activityId">
               </li>
             </ul>
           </div>
@@ -58,7 +59,7 @@
       }
     },
     async asyncData () {
-      //定义参数
+      //定义查询参数
       let params = {
         activityId : 'SYM',
         buyerId : '123',
@@ -74,7 +75,6 @@
         data: params
       })
         .then(function(response) {
-//          console.log(response.data.data.teamList);
           return {
             goodss: response.data.data.teamList
           }
@@ -82,15 +82,12 @@
         .catch(function(error) {
           console(error)
         })
-//      return axios.get('http://127.0.0.1:3222/api/getGroupList')
-//        .then((res) => {
-//          return {
-//            goodss: res.data.data
-//          }
-//        })
     },
     methods: {
-      goct: function () {
+      goct: function (e) {
+        // 获取活动id 储存用于查询活动详情
+        let activityId = e.target.parentNode.childNodes[2].value
+        sessionStorage.setItem('activityId', activityId)
         if (!this.data1) {
           this.data1 = true
         }
@@ -107,6 +104,26 @@
         this.currentpageNum = 1
         this.allLoaded = false
         setTimeout (() => {
+          //定义查询参数
+          let params = {
+            activityId : 'SYM',
+            buyerId : '123',
+            pageIndex: 1,
+            pageSize: 2,
+            shopId: 'wqeq',
+            storeId: 'qwe'
+          }
+          axios({
+            method: 'POST',
+            url: 'http://172.30.3.40:9086/mockjsdata/5/spell/getTeamList',
+            data: params
+          })
+            .then(function(response) {
+              self.goodss = response.data.data.teamList
+            })
+            .catch(function(error) {
+              console(error)
+            })
           self.$refs.loadmore.onTopLoaded()
         }, 500)
       },
@@ -120,7 +137,6 @@
         }, 500)
       },
       handleBottomChange: function (status){// 实时更新拖动状态
-        console.log(status)
         this.bottomStatus = status;
       }
     },
@@ -134,7 +150,7 @@
       setTimeout(function () {
         self.isShow = false
         filter.flter('participate')
-      }, Math.random() * 1000)
+      }, Math.random() * 500)
     },
     head () {
       return {

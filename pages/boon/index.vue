@@ -160,7 +160,9 @@
       for (var i = 0; i < lis.length; i++) {
         elWidth += lis[i].clientWidth
       }
+      // 得到活动id 用来查询活动详情
       self.$refs.mybox.style.width = elWidth + 30 + 'px'
+      console.log('22222:', sessionStorage.getItem('activityId'))
       //开始倒计时
       this.start()
     },

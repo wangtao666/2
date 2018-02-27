@@ -8,7 +8,8 @@ const store = () => new Vuex.Store({
     day: 0,
     hour: 1,
     minute: 0,
-    second: 1
+    second: 1,
+    activityId: ''
   },
   mutations: {
     increment (state) {

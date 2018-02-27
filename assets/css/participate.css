@@ -57,7 +57,7 @@ html,body{
 .el_bewrite>ul>li:last-child {
   color: rgb(234,81,47);
 }
-.el_bewrite>ul>li:last-child>span:last-child{
+.el_bewrite>ul>li:last-child>.el_btn{
   display: inline-block;
   width: 130px;
   height: 46px;
