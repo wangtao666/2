@@ -12,7 +12,7 @@
           <!--<div id="gawShelfNoShow" style="color: #666;word-break:break-all;display: none">商品货号: 22</div>-->
         </div>
       </div>
-        <div class="property">
+        <div class="property" v-if="Attrdata">
           <div id="gawAttributeBox" class="model">
             <span v-for="(item, index) in Attrdata" :key="index">
               <label class="flable">{{ item.attributeName }}</label>
@@ -37,8 +37,8 @@
       </div>
 
       <div class="col-2" style="display: block;">
-        <nuxt-link id="gawAddCartBtn" to="javascript:void(0)" class="btn gray" style="background: #fb7c0c;color: #fff!important;">加入购物车</nuxt-link>
-        <nuxt-link id="gawBuyNowBtn" to="javascript:void(0)" class="btn red" style="display: none">立即购买</nuxt-link>
+        <a id="gawAddCartBtn" href="javascript:void(0)" class="btn gray" style="background: #fb7c0c;color: #fff!important;" @click="addCard">加入购物车</a>
+        <a id="gawBuyNowBtn" href="javascript:void(0)" class="btn red" style="display: none">立即购买</a>
       </div>
     </div>
       </div>
@@ -46,6 +46,7 @@
   </div>
 </template>
 <script>
+  import { MessageBox } from 'mint-ui'
   export default {
     data () {
       return {
@@ -53,6 +54,11 @@
     },
 //    接收来自父组件的值
     props: ["showdia", "Picurl", "goodsName", "headPrice", "Attrdata"],
+    mounted () {
+      if (document.getElementById('gawAttributeBox').children.length > 2) {
+        document.getElementById('gawAttributeBox').style.height = '500px'
+      }
+    },
     methods: {
       close: function () {
 //        点击关闭按钮时 向父组件发送一个参数 childtoparent为约定的一个名称 父组件接收该值时，监听事件名称要与之相同
@@ -98,6 +104,18 @@
         if ( document.getElementById('gawBuyNum').value > 5 ) {
           document.getElementById('gawBuyNum').value = 5
         }
+      },
+      addCard: function () {
+        MessageBox({
+          title: '',
+          message: '商品已成功加入购物车',
+          showCancelButton: false,
+          showConfirmButton: false
+        })// 提示弹框
+        setTimeout(() => {
+          document.getElementsByClassName('v-modal')[0].click()// 隐藏弹框
+        },1000)
+        this.close()
       }
     }
   }
@@ -116,4 +134,32 @@
     transition: -webkit-transform .3s ease-out;
     transition: transform .3s ease-out;
   }
+
+
+.mint-msgbox{
+  background-color: rgba(0, 0, 0, 0.76);
+  width: 50%;
+  border-radius: 16px;
+  font-size: 24px;
+}
+
+.mint-msgbox-message {
+  color: #fff;
+}
+.mint-msgbox-btn{
+  background-color: rgba(0, 0, 0, 0);
+}
+.v-modal{
+  background: rgba(141, 141, 141, 0);
+}
+.mint-msgbox-confirm{
+  color: #fff;
+}
+.mint-msgbox-content {
+  border-bottom: 1px solid #ffffff;
+  padding: 40px 20px;
+}
+.mint-msgbox-btns{
+  display: none;
+}
 </style>

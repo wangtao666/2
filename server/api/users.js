@@ -109,6 +109,9 @@ router.get('/getclass', (req, res, next) => {
 
 // 商品详情页
 router.get('/getDetail', (req, res, next) => {
+  req.session.name = req.query.name
+  req.session.password = req.query.password
+  console.log('name:', req.session)
   let url = [];
   let timeId = setInterval(function () {
     let aa = Random.image('750x750', Random.color(), '#FFF', 'png', 'heheda');
@@ -224,7 +227,7 @@ router.get('/gettest', (req, res, next) => {
 
 router.post('/posttest',(req, res, next) => {
   // req.headers['content-type'] = "application/x-www-form-urlencoded"
-  console.log('333333333333:', req.body)
+  // console.log('333333333333:', req.body)
   res.send('1')
 })
 

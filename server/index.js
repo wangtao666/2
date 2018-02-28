@@ -1,6 +1,8 @@
 import Nuxt from 'nuxt'
 import express from 'express'
 import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+import session from 'express-session'
 
 
 import api from './api'
@@ -11,6 +13,15 @@ const port = process.env.PORT || 3000
 
 //使用body 不然 req.body为undifined
 app.use(bodyParser.json())
+
+app.use(cookieParser())
+
+app.use(session({
+  secret: '12345',
+  cookie: {maxAge: 60000},
+  resave: false,
+  saveUninitialized: true
+}))
 
 app.set('port', port)
 

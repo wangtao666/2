@@ -171,7 +171,7 @@
       setTimeout(function () {
         self.isShow = false
         filter.flter('box', false)
-      }, Math.random() * 1000)
+      }, Math.random() * 500)
       //开始倒计时
       this.start()
     },
@@ -262,7 +262,7 @@
                 }
               } else {
                 self.allLoaded = true
-                MessageBox.alert('已经加载完全部内容', '')
+                MessageBox.alert('已经加载完全部内容', '')//提示弹框
               }
               // 这一步很重要  不然无法实时切换loading状态 到 pull的状态
               self.$refs.loadmore.onBottomLoaded()

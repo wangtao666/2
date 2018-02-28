@@ -45,7 +45,6 @@
   import axios from 'axios'
   import Load from '../../components/load'
   import filter from '../../assets/js/filter'
-  import qs from  'qs'
   export default {
     data () {
       return {

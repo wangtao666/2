@@ -1,3 +1,8 @@
+#gawAttributeBox{
+  /*height: 500px;*/
+  height: inherit;
+  overflow-y: scroll;
+}
 .foot_dialog {
   z-index: 100000;
 }
@@ -31,7 +36,7 @@
 }
 .property_select {
   width: 750px;
-  height: calc(100% - 94px);
+  /*height: calc(100% - 94px);*/
   overflow-y: scroll;
   box-sizing: border-box;
   position: absolute;

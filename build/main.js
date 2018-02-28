@@ -65,7 +65,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -128,7 +128,7 @@ module.exports = {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_express__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__users__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__users__ = __webpack_require__(9);
 
 
 
@@ -144,7 +144,7 @@ router.use(__WEBPACK_IMPORTED_MODULE_1__users__["a" /* default */]);
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(10);
+module.exports = __webpack_require__(12);
 
 
 /***/ },
@@ -157,14 +157,26 @@ module.exports = require("body-parser");
 /* 5 */
 /***/ function(module, exports) {
 
-module.exports = require("nuxt");
+module.exports = require("cookie-parser");
 
 /***/ },
 /* 6 */
+/***/ function(module, exports) {
+
+module.exports = require("express-session");
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+module.exports = require("nuxt");
+
+/***/ },
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 //链接 mongoose nuxt集合
-var mongoose = __webpack_require__(9);
+var mongoose = __webpack_require__(11);
 var db = mongoose.createConnection('mongodb://localhost:27017/mynuxt');
 //链接错误
 db.on('error', function (err) {
@@ -189,17 +201,17 @@ exports.db = db;
 console.log('数据库启动成功！！！！');
 
 /***/ },
-/* 7 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_express__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_request__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_request__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_request___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_request__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__db_nuxtserrver__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__db_nuxtserrver__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__db_nuxtserrver___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__db_nuxtserrver__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_mockjs__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_mockjs__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_mockjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_mockjs__);
 
 
@@ -312,6 +324,9 @@ router.get('/getclass', function (req, res, next) {
 
 // 商品详情页
 router.get('/getDetail', function (req, res, next) {
+  req.session.name = req.query.name;
+  req.session.password = req.query.password;
+  console.log('name:', req.session);
   var url = [];
   var timeId = setInterval(function () {
     var aa = Random.image('750x750', Random.color(), '#FFF', 'png', 'heheda');
@@ -423,51 +438,55 @@ router.get('/gettest', function (req, res, next) {
 
 router.post('/posttest', function (req, res, next) {
   // req.headers['content-type'] = "application/x-www-form-urlencoded"
-  console.log('333333333333:', req.body);
+  // console.log('333333333333:', req.body)
   res.send('1');
 });
 
 /* harmony default export */ exports["a"] = router;
 
 /***/ },
-/* 8 */
+/* 10 */
 /***/ function(module, exports) {
 
 module.exports = require("mockjs");
 
 /***/ },
-/* 9 */
+/* 11 */
 /***/ function(module, exports) {
 
 module.exports = require("mongoose");
 
 /***/ },
-/* 10 */
+/* 12 */
 /***/ function(module, exports) {
 
 module.exports = require("regenerator-runtime");
 
 /***/ },
-/* 11 */
+/* 13 */
 /***/ function(module, exports) {
 
 module.exports = require("request");
 
 /***/ },
-/* 12 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_E_2_node_modules_babel_runtime_regenerator__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_E_2_node_modules_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_E_2_node_modules_babel_runtime_regenerator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nuxt__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nuxt__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nuxt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_nuxt__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_express__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_express___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_express__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_body_parser__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_body_parser___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_body_parser__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__api__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_cookie_parser__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_cookie_parser___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_cookie_parser__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_express_session__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_express_session___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_express_session__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__api__ = __webpack_require__(2);
 
 
 // Start nuxt.js
@@ -539,6 +558,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
 
+
+
 var app = __WEBPACK_IMPORTED_MODULE_2_express___default()();
 var host = process.env.HOST;
 var port = process.env.PORT || 3000;
@@ -546,10 +567,19 @@ var port = process.env.PORT || 3000;
 //使用body 不然 req.body为undifined
 app.use(__WEBPACK_IMPORTED_MODULE_3_body_parser___default.a.json());
 
+app.use(__WEBPACK_IMPORTED_MODULE_4_cookie_parser___default()());
+
+app.use(__WEBPACK_IMPORTED_MODULE_5_express_session___default()({
+  secret: '12345',
+  cookie: { maxAge: 60000 },
+  resave: false,
+  saveUninitialized: true
+}));
+
 app.set('port', port);
 
 // Import API Routes
-app.use('/api', __WEBPACK_IMPORTED_MODULE_4__api__["a" /* default */]);
+app.use('/api', __WEBPACK_IMPORTED_MODULE_6__api__["a" /* default */]);
 
 start();
 

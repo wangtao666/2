@@ -26,7 +26,7 @@
         </div>
       </div>
       <!--属性-->
-      <div class="spxq_property" @click="showdial">
+      <div class="spxq_property" @click="showdial" v-if="Attrname">
         <div id="table_a" v-show="table_a">
           <p v-for="(item, index) in Attrdata" :key="index">
             <span>{{ item.attributeName }}</span>
@@ -70,15 +70,15 @@
       </div>
       <div class="fix-bottom-group clean">
         <div class="bottom-1 _left clean">
-          <a class="home_icon2 borderBox" href="#">
+          <a class="home_icon2 borderBox" href="javascript:void(0)">
             商城
           </a>
-          <a class="collect borderBox" href="#">
+          <a class="collect borderBox" href="javascript:void(0)">
             收藏
           </a>
         </div>
         <div class="bottom-2 _left clean">
-          <a class="addCar borderBox _left" href="#">加入购物车</a>
+          <a class="addCar borderBox _left" href="#" @click="addCard">加入购物车</a>
           <a class="oneBuy borderBox _left" href="#">单独购买</a>
           <a class="fightGroup" href="#">去拼团</a>
         </div>
@@ -108,7 +108,7 @@
   import filter from '../../assets/js/filter'
   import Load from '../../components/load'
   import Dial from '../../components/dialog'
-
+  import { MessageBox } from 'mint-ui'
   export default {
     data () {
       return {
@@ -118,7 +118,6 @@
         isShow2: false,
         goodss: [],
         Attrdata: [],
-        Attrlist: [],
         table_a: true,
         table_b: false,
         showdia: '',
@@ -126,7 +125,8 @@
         goodsName: '',
         headPrice: '',
         Isselect: '',
-        Isselectlth: ''
+        Isselectlth: '',
+        Attrname: ''
       }
     },
     head () {
@@ -136,15 +136,15 @@
     },
     async asyncData () {
       return axios.all([
-        axios.get('http://127.0.0.1:3222/api/getDetail')
+        axios.get('http://127.0.0.1:3222/api/getDetail?name=wangtao&password=1234')
       ])
       .then(axios.spread(function (content) {
-        console.log(content.data.date)
+//        console.log(content.data.date)
         return {
           imgurl: JSON.parse(content.data.date[0].contentsPic),
           goodss: content.data.date[0].goodsDetail,
           Attrdata: content.data.date[0].showAttributeList,
-          Attrlist: content.data.date[0].showAttributeList[0].attributeOptionList
+          Attrname: content.data.date[0].showAttributeList[0].attributeName
         }
       }))
     },
@@ -163,7 +163,7 @@
       setTimeout(function () {
         self.isShow = false
         filter.flter('wrap', false)
-      }, Math.random() * 1000)
+      }, Math.random() * 500)
     },
     methods: {
       loadTop: function () {// 加载更多数据  可自行写事件(拉到顶部时)
@@ -197,6 +197,34 @@
       },
       Torule: function () {
         location.href = 'rule'
+      },
+      addCard: function () {// 加入购物车
+        let self = this
+        if (document.getElementById('table_a')) {
+          if (document.getElementById('table_a').children[0].children.length > 0) {
+            self.showdia = true
+          } else {
+            MessageBox({
+              title: '',
+              message: '商品已成功加入购物车',
+              showCancelButton: false,
+              showConfirmButton: false
+            })// 提示弹框
+            setTimeout(() => {
+              document.getElementsByClassName('v-modal')[0].click()// 隐藏弹框
+            },1000)
+          }
+        } else {
+          MessageBox({
+            title: '',
+            message: '商品已成功加入购物车',
+            showCancelButton: false,
+            showConfirmButton: false
+          })// 提示弹框
+          setTimeout(() => {
+            document.getElementsByClassName('v-modal')[0].click()// 隐藏弹框
+          },1000)
+        }
       }
     }
   }
@@ -308,5 +336,31 @@
     bottom: 120px;
     right: 9px;
     z-index: 59;
+  }
+  .mint-msgbox{
+    background-color: rgba(0, 0, 0, 0.76);
+    width: 50%;
+    border-radius: 16px;
+    font-size: 24px;
+  }
+
+  .mint-msgbox-message {
+    color: #fff;
+  }
+  .mint-msgbox-btn{
+    background-color: rgba(0, 0, 0, 0);
+  }
+  .v-modal{
+    background: rgba(141, 141, 141, 0);
+  }
+  .mint-msgbox-confirm{
+    color: #fff;
+  }
+  .mint-msgbox-content {
+    border-bottom: 1px solid #ffffff;
+    padding: 40px 20px;
+  }
+  .mint-msgbox-btns{
+    display: none;
   }
 </style>
