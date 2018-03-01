@@ -176,18 +176,22 @@ li {
 }
 /*弹框样式*/
 .mint-msgbox{
-  background-color: #eadcd3;
+  background-color: rgba(0, 0, 0, 0.76);
   width: 50%;
-  border-radius: 16px
+  border-radius: 16px;
+  font-size: 24px;
 }
 .mint-msgbox-message {
-  color: #0c0000;
+  color: #fff;
 }
 .mint-msgbox-btn{
   background-color: rgba(0, 0, 0, 0);
 }
 .v-modal{
-  background: #8d8d8d;
+  background: rgba(141, 141, 141, 0);
+}
+.mint-msgbox-confirm{
+  color: #fff;
 }
 .mint-msgbox-content {
   border-bottom: 1px solid #ffffff;

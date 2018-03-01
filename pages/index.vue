@@ -31,12 +31,12 @@
                 <li>{{ item.goodsName }}</li>
                 <li>团长价:
                   <span>￥</span>
-                  <span>{{ item.salesPrice }}</span>
+                  <span>{{ item.headPrice }}</span>
                 </li>
                 <li>
-                  拼团价：
+                  团员价：
                   <span>￥</span>
-                  <span>{{ item.spellPrice }}</span>
+                  <span>{{ item.memberPrice }}</span>
                   <span>市场价:<span>￥{{ item.marketPrice}}</span></span>
                 </li>
               </ul>
@@ -70,7 +70,7 @@
         </p>
       </div>
     </div>
-    <div id="lead">
+    <div id="lead" v-show="show2">
       <ul class="el_choose">
         <li>
           <div @click="openwin1">引导</div>
@@ -100,42 +100,83 @@
     name: 'box',
     data () {
       return {
-        active: 0,
-        clas: [],
-        data1: false,
-        data2: false,
-        data3: false,
-        isShow: true,
-        show2: true,
-        goodss: [],
-        alldata: [],
+        active: 0,// 页签切换索引
+        clas: [],// 分类页签
+        data1: false,// 背景模态层
+        data2: false,// 引导按钮弹出框
+        data3: false,// 活动规则弹出框
+        isShow: true,// 加载动画
+        show2: false,// 底部去开团按钮
+        goodss: [],// 活动商品参数
+        alldata: [],// 活动规则
         allLoaded: false,//true禁止下拉刷新
         autoFill: false,//若为真，loadmore 会自动检测并撑满其容器
         currentpageNum: 1,//当前页数
         totalNum: 3,//总页数
+        gethead: [],// 头部图片链接
+        msg: ''// 请求错误提示消息
       }
     },
     async asyncData () {
+      //获得头部
+      let gethead = {
+        activityId: '123',
+        shopId: '234',
+        storeId: '345'
+      }
+      //获得标题
+      let gettitle = {
+        shopId : '123',
+        storeId : '234'
+      }
+      //获得商品
+      let getclass = {
+        activityId : '123',
+        categoryId : '234',
+        pageIndex : 1,
+        pageSize : 4,
+        shopId : '123',
+        storeId : '234',
+      }
       // 记得return 不然不会返回结果
       return axios.all([
-        axios.get('http://127.0.0.1:3222/api/gettitle'),
-        axios.get('http://127.0.0.1:3222/api/getclass')
+        axios.post('http://127.0.0.1:3222/api/gethead', gethead),
+        axios.post('http://127.0.0.1:3222/api/gettitle', gettitle),
+        axios.post('http://127.0.0.1:3222/api/getclass', getclass)
       ])
-        .then(axios.spread(function (reposResp, getclass) {
-//          console.log(reposResp.data.choose)
-          let names = [];
-          // 获得所有对象的名称
-          for(let name in getclass.data) {
-            names.push(name)
-          }
-          // 上面请求都完成后，才执行这个回调方法
-          return {
-            // 头部导航内容
-            clas: reposResp.data.choose,
-            // 取索引为1的对象默认展示
-            goodss: getclass.data[names[0]],
-            // 分类数据记录一下
-            alldata: getclass.data
+        .then(axios.spread(function (gethead, gettitle, getclass) {
+          if (gethead.data.state) {
+            if (gettitle.data.state) {
+              if (getclass.data.state) {
+                let names = [];
+                // 获得所有对象的名称
+                for (let i = 0; i < gettitle.data.data.length; i++) {
+                  names.push(gettitle.data.data[i].id)
+                }
+                return {
+                  //头部信息
+                  gethead: gethead.data.data,
+                  // 头部导航内容
+                  clas: gettitle.data.data,
+                  // 取索引为1的对象默认展示
+                  goodss: getclass.data.data[names[0]],
+                  // 分类数据记录一下
+                  alldata: getclass.data.data
+                }
+              } else {
+                return {
+                  msg : getclass.data.msg
+                }
+              }
+            }  else {
+              return {
+                msg : gettitle.data.msg
+              }
+            }
+          }  else {
+            return {
+              msg : gethead.data.msg
+            }
           }
         }))
     },
@@ -159,19 +200,65 @@
         elWidth += lis[i].clientWidth
       }
       self.$refs.mybox.style.width = elWidth + 30 + 'px'
+
       // 设置窗口2为居中
       self.$refs.dailog.children[0].style.left = win1lt + 'px'
       self.$refs.dailog.children[0].style.top = win2tp + 'px'
+
       // 设置窗口1为居中
       self.$refs.dailog.children[1].style.left = win1lt + 'px'
       self.$refs.dailog.children[1].style.top = win1tp + 'px'
+
       //加载动画
       filter.flter('box', true)
       self.isShow = true
-      setTimeout(function () {
-        self.isShow = false
-        filter.flter('box', false)
-      }, Math.random() * 500)
+
+      //如果有失败的返回结果
+      if (self.msg) {
+        self.show2 = false
+        MessageBox.alert(self.msg, '')// 提示错误信息
+
+        setTimeout(function () {
+          self.isShow = false
+          filter.flter('box', false)
+       }, Math.random() * 500)
+      } else {
+        self.show2 = true
+        setTimeout(function () {
+          self.isShow = false
+          filter.flter('box', false)
+        }, Math.random() * 500)
+      }
+
+
+
+
+      //设置banner背景图片
+      let backUrl = this.gethead.homeBannerUrl
+      document.getElementsByClassName('el_banner')[0].style.backgroundImage = 'url(' + backUrl + ')'
+      console.log(self.gethead.endTime)
+      // 时间格式拼接
+      let DATE = new Date
+      let year = DATE.getFullYear()
+      let month = DATE.getMonth() + 1
+      let day = DATE.getDate()
+      let hour = DATE.getHours()
+      let mint = DATE.getMinutes()
+      let S = DATE.getSeconds()
+      let currenttime = new Date(year + '-' + month + '-' + day + ' ' + hour +':'+ mint + ':' + S)// 当前时间
+      let endtime = new Date(self.gethead.endTime) // 请求来的结束时间
+      let curDay = Math.floor((endtime - currenttime) / 1000 / 60 / 60 / 24)
+      let curHour = Math.floor((endtime - currenttime) / 1000 / 60 / 60) % 24
+      let curMint = Math.floor((endtime - currenttime) / 1000 / 60 % 60)
+      let curS = (endtime - currenttime) / 1000 % 60
+      if ( endtime - currenttime > 0 ) {
+        // 改变store里面的时分秒数据
+        this.$store.state.day = curDay
+        this.$store.state.hour = curHour
+        this.$store.state.minute = curMint
+        this.$store.state.second = curS
+        console.log(curDay + '天' + curHour + '时' + curMint + '分' + curS + '秒')
+      }
       //开始倒计时
       this.start()
     },
@@ -218,7 +305,15 @@
         this.currentpageNum = 1
         this.allLoaded = false
         setTimeout (() => {
-          axios.get('/api/getclass')
+          let getclass = {
+            activityId : '123',
+            categoryId : '234',
+            pageIndex : 1,
+            pageSize : 4,
+            shopId : '123',
+            storeId : '234'
+          }
+          axios.post('/api/getclass', getclass)
             .then(function(response){
               // 让当前被选中的导航 在下拉刷新后一样的呈现出当前导航对应的内容
               let stext = document.getElementsByClassName('active')[0].innerText
@@ -229,8 +324,8 @@
                 }
               }
               // 更新一下所有数据，因为这里刷新了一下，而前面的alldata是进来就请求的数据，需要更新
-              self.alldata = response.data
-              self.goodss = response.data[curtext]
+              self.alldata = response.data.data
+              self.goodss = response.data.data[curtext]
               // 这一步很重要  不然无法实时切换loading状态 到 pull的状态
               self.$refs.loadmore.onTopLoaded()
             })
@@ -245,7 +340,15 @@
 //        console.log('this.current1:', this.currentpageNum)
         let self = this
         setTimeout(() => {
-          axios.get('/api/getclass')
+          let getclass = {
+            activityId : '123',
+            categoryId : '234',
+            pageIndex : 1,
+            pageSize : 4,
+            shopId : '123',
+            storeId : '234'
+          }
+          axios.post('/api/getclass', getclass)
             .then(function(response){
               // 让当前被选中的导航 在下拉刷新后一样的呈现出当前导航对应的内容
               let stext = document.getElementsByClassName('active')[0].innerText
@@ -256,9 +359,9 @@
                     curtext = self.clas[i].id
                   }
                 }
-                for (let j = 0; j < response.data[curtext].length; j++){
+                for (let j = 0; j < response.data.data[curtext].length; j++){
                   // 将得到的数据循环后单个push到之前的数组中去
-                  self.goodss.push(response.data[curtext][j])
+                  self.goodss.push(response.data.data[curtext][j])
                 }
               } else {
                 self.allLoaded = true
@@ -276,11 +379,6 @@
         this.bottomStatus = status;
       },
       start: function () {// 倒计时
-        let data = { 'day':1, 'hour':1, 'minute':1, 'second':1 }// 请求得到的时间
-        this.$store.state.day = data.day
-        this.$store.state.hour = data.hour
-        this.$store.state.minute = data.minute
-        this.$store.state.second = data.second// 改变store里面的时分秒数据
         this.$store.commit('increment') // 提交
       }
     }

@@ -234,10 +234,24 @@ router.get('/getmsg', function (req, res, next) {
   });
 });
 
+//获得头部信息
+router.post('/gethead', function (req, res, next) {
+  var data = {
+    "data": {
+      "activityId": "",
+      "endTime": "2018-3-1 17:45:0",
+      "homeBannerUrl": "http://imagecs.quanyou.com.cn/group1/M00/00/52/rB4DMFp0TliACzt-AAA2BCwZngQ318.jpg"
+    },
+    "msg": "获取活动首页基本信息失败！",
+    "state": 1
+  };
+  res.json(data);
+});
+
 // 获得分类
-router.get('/gettitle', function (req, res, next) {
+router.post('/gettitle', function (req, res, next) {
   var data2 = __WEBPACK_IMPORTED_MODULE_3_mockjs___default.a.mock({
-    'choose': [{
+    'data': [{
       'categoryName': '全部',
       'id': 'all'
     }, {
@@ -258,65 +272,72 @@ router.get('/gettitle', function (req, res, next) {
     }, {
       'categoryName': '书房',
       'id': 'sf'
-    }]
+    }],
+    msg: '失败o ！',
+    state: 1
   });
   res.json(data2);
   // console.log(data2)
 });
 
 // 获得商品
-router.get('/getclass', function (req, res, next) {
+router.post('/getclass', function (req, res, next) {
+  // console.log('activityId:', req.body.activityId, 'categoryId:', req.body.categoryId, 'pageIndex:', req.body.pageIndex)
   var data = __WEBPACK_IMPORTED_MODULE_3_mockjs___default.a.mock({
-    'all|1-10': [{
-      'goodsName': Random.ctitle(3, 30),
-      'salesPrice|+1': 71,
-      'spellPrice|+1': 1,
-      'marketPrice|+1': 1,
-      'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-    }],
-    'cf|1-10': [{
-      'goodsName': Random.ctitle(3, 30),
-      'salesPrice|+1': 1,
-      'spellPrice|+1': 1,
-      'marketPrice|+1': 1,
-      'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-    }],
-    'ct|1-10': [{
-      'goodsName': Random.ctitle(3, 30),
-      'salesPrice|+1': 11,
-      'spellPrice|+1': 12,
-      'marketPrice|+1': 13,
-      'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-    }],
-    'yt|1-10': [{
-      'goodsName': Random.ctitle(3, 30),
-      'salesPrice|+1': 21,
-      'spellPrice|+1': 22,
-      'marketPrice|+1': 23,
-      'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-    }],
-    'ys|1-10': [{
-      'goodsName': Random.ctitle(3, 30),
-      'salesPrice|+1': 31,
-      'spellPrice|+1': 32,
-      'marketPrice|+1': 33,
-      'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-    }],
-    'et|1-10': [{
-      'goodsName': Random.ctitle(3, 30),
-      'salesPrice|+1': 41,
-      'spellPrice|+1': 42,
-      'marketPrice|+1': 43,
-      'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-    }],
-    'sf|1-10': [{
-      'goodsName': Random.ctitle(3, 30),
-      'salesPrice|+1': 51,
-      'spellPrice|+1': 52,
-      'marketPrice|+1': 53,
-      'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-    }],
-    'content': Random.paragraph()
+    'data': {
+      'all|1-10': [{
+        'goodsName': Random.ctitle(3, 30),
+        'headPrice|+1': 71,
+        'memberPrice|+1': 1,
+        'marketPrice|+1': 1,
+        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+      }],
+      'cf|1-10': [{
+        'goodsName': Random.ctitle(3, 30),
+        'headPrice|+1': 1,
+        'memberPrice|+1': 1,
+        'marketPrice|+1': 1,
+        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+      }],
+      'ct|1-10': [{
+        'goodsName': Random.ctitle(3, 30),
+        'headPrice|+1': 11,
+        'memberPrice|+1': 12,
+        'marketPrice|+1': 13,
+        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+      }],
+      'yt|1-10': [{
+        'goodsName': Random.ctitle(3, 30),
+        'headPrice|+1': 21,
+        'memberPrice|+1': 22,
+        'marketPrice|+1': 23,
+        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+      }],
+      'ys|1-10': [{
+        'goodsName': Random.ctitle(3, 30),
+        'headPrice|+1': 31,
+        'memberPrice|+1': 32,
+        'marketPrice|+1': 33,
+        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+      }],
+      'et|1-10': [{
+        'goodsName': Random.ctitle(3, 30),
+        'headPrice|+1': 41,
+        'memberPrice|+1': 42,
+        'marketPrice|+1': 43,
+        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+      }],
+      'sf|1-10': [{
+        'goodsName': Random.ctitle(3, 30),
+        'headPrice|+1': 51,
+        'memberPrice|+1': 52,
+        'marketPrice|+1': 53,
+        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+      }],
+      'content': Random.paragraph()
+    },
+    msg: '成功！',
+    state: 1
   });
   res.json(data);
   // console.log(data)
@@ -324,6 +345,7 @@ router.get('/getclass', function (req, res, next) {
 
 // 商品详情页
 router.get('/getDetail', function (req, res, next) {
+  //存入session
   req.session.name = req.query.name;
   req.session.password = req.query.password;
   console.log('name:', req.session);

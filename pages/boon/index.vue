@@ -30,15 +30,15 @@
           </div>
           <div class="el_bewrite">
             <ul>
-              <li>{{ item.bewrite }}</li>
+              <li>{{ item.goodsName }}</li>
               <li>团长价:
                 <span>￥</span>
-                <span>{{ item.salesPrice }}</span>
+                <span>{{ item.headPrice }}</span>
               </li>
               <li>
-                拼团价：
+                团员价：
                 <span>￥</span>
-                <span>{{ item.spellPrice }}</span>
+                <span>{{ item.memberPrice }}</span>
                 <span>
                   市场价:
                   <span>￥{{ item.marketPrice }}</span>
@@ -89,7 +89,7 @@
         this.currentpageNum = 1
         this.allLoaded = false
         setTimeout (() => {
-          axios.get('/api/getclass')
+          axios.post('/api/getclass')
             .then(function(response){
               // 让当前被选中的导航 在下拉刷新后一样的呈现出当前导航对应的内容
               let stext = document.getElementsByClassName('active')[0].innerText
@@ -99,8 +99,8 @@
                   curtext = self.clas[i].id
                 }
               }
-              self.alldata = response.data
-              self.goodss = response.data[curtext]
+              self.alldata = response.data.data
+              self.goodss = response.data.data[curtext]
               self.$refs.loadmore.onTopLoaded()
             })
             .catch(function(err){
@@ -114,7 +114,7 @@
 //        console.log('this.current1:', this.currentpageNum)
         let self = this
         setTimeout(() => {
-          axios.get('/api/getclass')
+          axios.post('/api/getclass')
             .then(function(response){
               // 让当前被选中的导航 在下拉刷新后一样的呈现出当前导航对应的内容
               let stext = document.getElementsByClassName('active')[0].innerText
@@ -125,9 +125,10 @@
                     curtext = self.clas[i].id
                   }
                 }
-                for (let j = 0; j < response.data[curtext].length; j++){
+                for (let j = 0; j < response.data.data[curtext].length; j++){
                   // 将得到的数据循环后单个push到之前的数组中去
-                  self.goodss.push(response.data[curtext][j])
+                  self.goodss.push(response.data.data[curtext][j])
+//                  console.log(self.goodss)
                 }
               } else {
                 self.allLoaded = true
@@ -162,30 +163,44 @@
       }
       // 得到活动id 用来查询活动详情
       self.$refs.mybox.style.width = elWidth + 30 + 'px'
-      console.log('22222:', sessionStorage.getItem('activityId'))
+//      console.log('22222:', sessionStorage.getItem('activityId'))
       //开始倒计时
       this.start()
     },
     async asyncData () {
+      //获得标题
+      let gettitle = {
+        shopId : '123',
+        storeId : '234'
+      }
+      //获得商品
+      let getclass = {
+        activityId : '123',
+        categoryId : '234',
+        pageIndex : 1,
+        pageSize : 4,
+        shopId : '123',
+        storeId : '234',
+      }
       return axios.all([
-        axios.get('http://127.0.0.1:3222/api/gettitle'),
-        axios.get('http://127.0.0.1:3222/api/getclass')
+        axios.post('http://127.0.0.1:3222/api/gettitle', gettitle),
+        axios.post('http://127.0.0.1:3222/api/getclass', getclass)
       ])
-        .then(axios.spread(function (reposResp, getclass) {
+        .then(axios.spread(function (gettitle, getclass) {
 //          console.log(reposResp.data.choose)
           let names = [];
           // 获得所有对象的名称
-          for(let name in getclass.data) {
-            names.push(name)
+          for (let i = 0; i < gettitle.data.data.length; i++) {
+            names.push(gettitle.data.data[i].id)
           }
           // 上面请求都完成后，才执行这个回调方法
           return {
             // 头部导航内容
-            clas: reposResp.data.choose,
+            clas: gettitle.data.data,
             // 取索引为1的对象默认展示
-            goodss: getclass.data[names[0]],
+            goodss: getclass.data.data[names[0]],
             // 分类数据记录一下
-            alldata: getclass.data
+            alldata: getclass.data.data
           }
         }))
     }

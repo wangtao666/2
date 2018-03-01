@@ -1,5 +1,5 @@
 import axios from 'axios'
-export const baseURL ="https://jsonplaceholder.typicode.com"
+export const baseURL ="http://172.30.3.40:9086/mockjsdata/5"
 const api = axios.create({
   baseURL,
   timeout: 5000,
