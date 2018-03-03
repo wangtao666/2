@@ -1,11 +1,11 @@
 import { Router } from 'express'
 import request from 'request'
-import nuxtSchema from '../../db/nuxtserrver'
+// import nuxtSchema from '../../db/nuxtserrver'
 import Mock from 'mockjs'
 
 let Random = Mock.Random
-let nuxtlist = nuxtSchema.nuxtlist
-let tslist = nuxtSchema.tslist
+// let nuxtlist = nuxtSchema.nuxtlist
+// let tslist = nuxtSchema.tslist
 
 let router = Router()
 
@@ -24,7 +24,7 @@ router.post('/gethead', (req, res, next) => {
   let data = {
     "data": {
       "activityId": "",
-      "endTime": "2018-3-1 17:45:0",
+      "endTime": "2018-3-2 17:45:0",
       "homeBannerUrl": "http://imagecs.quanyou.com.cn/group1/M00/00/52/rB4DMFp0TliACzt-AAA2BCwZngQ318.jpg"
     },
     "msg": "获取活动首页基本信息失败！",
@@ -72,56 +72,57 @@ router.post('/getclass', (req, res, next) => {
   // console.log('activityId:', req.body.activityId, 'categoryId:', req.body.categoryId, 'pageIndex:', req.body.pageIndex)
   let data = Mock.mock({
     'data' : ({
-      'all|1-10': [{
-        'goodsName': Random.ctitle(3, 30),
-        'headPrice|+1': 71,
-        'memberPrice|+1': 1,
-        'marketPrice|+1': 1,
-        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-      }],
-      'cf|1-10': [{
-        'goodsName': Random.ctitle(3, 30),
-        'headPrice|+1': 1,
-        'memberPrice|+1': 1,
-        'marketPrice|+1': 1,
-        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-      }],
-      'ct|1-10': [{
-        'goodsName': Random.ctitle(3, 30),
-        'headPrice|+1': 11,
-        'memberPrice|+1': 12,
-        'marketPrice|+1': 13,
-        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-      }],
-      'yt|1-10': [{
-        'goodsName': Random.ctitle(3, 30),
-        'headPrice|+1': 21,
-        'memberPrice|+1': 22,
-        'marketPrice|+1': 23,
-        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-      }],
-      'ys|1-10': [{
-        'goodsName': Random.ctitle(3, 30),
-        'headPrice|+1': 31,
-        'memberPrice|+1': 32,
-        'marketPrice|+1': 33,
-        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-      }],
-      'et|1-10': [{
-        'goodsName': Random.ctitle(3, 30),
-        'headPrice|+1': 41,
-        'memberPrice|+1': 42,
-        'marketPrice|+1': 43,
-        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-      }],
-      'sf|1-10': [{
-        'goodsName': Random.ctitle(3, 30),
-        'headPrice|+1': 51,
-        'memberPrice|+1': 52,
-        'marketPrice|+1': 53,
-        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-      }],
-      'content': Random.paragraph()
+      content: [{
+        'all|3': [{
+          'goodsName': Random.ctitle(3, 30),
+          'headPrice|+1': 71,
+          'memberPrice|+1': 1,
+          'marketPrice|+1': 1,
+          'pic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+        }],
+        'cf|3': [{
+          'goodsName': Random.ctitle(3, 30),
+          'headPrice|+1': 1,
+          'memberPrice|+1': 1,
+          'marketPrice|+1': 1,
+          'pic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+        }],
+        'ct|3': [{
+          'goodsName': Random.ctitle(3, 30),
+          'headPrice|+1': 11,
+          'memberPrice|+1': 12,
+          'marketPrice|+1': 13,
+          'pic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+        }],
+        'yt|3': [{
+          'goodsName': Random.ctitle(3, 30),
+          'headPrice|+1': 21,
+          'memberPrice|+1': 22,
+          'marketPrice|+1': 23,
+          'pic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+        }],
+        'ys|3': [{
+          'goodsName': Random.ctitle(3, 30),
+          'headPrice|+1': 31,
+          'memberPrice|+1': 32,
+          'marketPrice|+1': 33,
+          'pic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+        }],
+        'et|3': [{
+          'goodsName': Random.ctitle(3, 30),
+          'headPrice|+1': 41,
+          'memberPrice|+1': 42,
+          'marketPrice|+1': 43,
+          'pic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+        }],
+        'sf|3': [{
+          'goodsName': Random.ctitle(3, 30),
+          'headPrice|+1': 51,
+          'memberPrice|+1': 52,
+          'marketPrice|+1': 53,
+          'pic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+        }]
+      }]
     }),
     msg : '成功！',
     state: 1
@@ -135,7 +136,7 @@ router.get('/getDetail', (req, res, next) => {
   //存入session
   req.session.name = req.query.name
   req.session.password = req.query.password
-  console.log('name:', req.session)
+  // console.log('name:', req.session)
   let url = [];
   let timeId = setInterval(function () {
     let aa = Random.image('750x750', Random.color(), '#FFF', 'png', 'heheda');

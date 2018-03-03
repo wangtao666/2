@@ -54,7 +54,9 @@
         allLoaded: false,//true禁止下拉刷新
         autoFill: false,//若为真，loadmore 会自动检测并撑满其容器
         currentpageNum: 1,//当前页数
-        totalNum: 3,//总页数
+        totalNum: 3,//总页数,
+        photo: '',
+        nickName: ''
       }
     },
     async asyncData () {
@@ -63,9 +65,7 @@
         activityId : 'SYM',
         buyerId : '123',
         pageIndex: 1,
-        pageSize: 2,
-        shopId: 'wqeq',
-        storeId: 'qwe'
+        pageSize: 2
       }
 
       return axios({
@@ -75,11 +75,11 @@
       })
         .then(function(response) {
           return {
-            goodss: response.data.data.teamList
+            goodss: response.data.data.content,
           }
         })
         .catch(function(error) {
-          console(error)
+          console.log(error)
         })
     },
     methods: {
@@ -118,7 +118,7 @@
             data: params
           })
             .then(function(response) {
-              self.goodss = response.data.data.teamList
+              self.goodss = response.data.data.content
             })
             .catch(function(error) {
               console(error)
@@ -150,6 +150,9 @@
         self.isShow = false
         filter.flter('participate')
       }, Math.random() * 500)
+      sessionStorage.setItem('photo', self.goodss[0].photo)
+      sessionStorage.setItem('nickName', self.goodss[0].nickName)
+      console.log('33333:', self.goodss[0].photo, self.goodss[0].nickName)// 还没完成
     },
     head () {
       return {

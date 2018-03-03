@@ -441,6 +441,7 @@ body, button, input, select, textarea {
   background: inherit;
   margin-bottom: 96px;
   overflow-x: hidden;
+  height: 100%;
 }
 .d_switch a.cur:after, .d_switch a:hover:after {
   content: '';

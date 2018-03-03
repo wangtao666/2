@@ -19,8 +19,8 @@ html,body{
 .el_banner{
   width: 750px;
   height: 230px;
-  background: rgb(235,97,0);
   position: relative;
+  background-repeat: round;
 }
 .el_navs{
   width: 750px;
@@ -115,7 +115,6 @@ html,body{
   float: left;
   margin-left: 27px;
   margin-right: 24px;
-  background-image: url("../../assets/images/prompt.png");
   background-repeat: round;
 }
 .el_jion{

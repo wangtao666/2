@@ -65,7 +65,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -128,7 +128,7 @@ module.exports = {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_express__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__users__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__users__ = __webpack_require__(8);
 
 
 
@@ -144,7 +144,7 @@ router.use(__WEBPACK_IMPORTED_MODULE_1__users__["a" /* default */]);
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(12);
+module.exports = __webpack_require__(10);
 
 
 /***/ },
@@ -175,52 +175,21 @@ module.exports = require("nuxt");
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-//链接 mongoose nuxt集合
-var mongoose = __webpack_require__(11);
-var db = mongoose.createConnection('mongodb://localhost:27017/mynuxt');
-//链接错误
-db.on('error', function (err) {
-    console.log(err);
-});
-//Schema 结构
-var Schema = mongoose.Schema;
-//表 nuxt
-var nuxtlistScheMa = new Schema({
-    name: String,
-    choose: String
-});
-//表tishi
-var tslistScheMa = new Schema({
-    tishi: String
-});
-//关联 nuxtlist -> nuxt 表
-exports.nuxtlist = db.model('nuxt', nuxtlistScheMa, 'nuxt');
-//关联 tslistScheMa
-exports.tslist = db.model('tishi', tslistScheMa, 'tishi');
-exports.db = db;
-console.log('数据库启动成功！！！！');
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_express__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_request__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_request__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_request___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_request__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__db_nuxtserrver__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__db_nuxtserrver___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__db_nuxtserrver__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_mockjs__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_mockjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_mockjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_mockjs__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_mockjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_mockjs__);
 
 
+// import nuxtSchema from '../../db/nuxtserrver'
 
 
-
-var Random = __WEBPACK_IMPORTED_MODULE_3_mockjs___default.a.Random;
-var nuxtlist = __WEBPACK_IMPORTED_MODULE_2__db_nuxtserrver___default.a.nuxtlist;
-var tslist = __WEBPACK_IMPORTED_MODULE_2__db_nuxtserrver___default.a.tslist;
+var Random = __WEBPACK_IMPORTED_MODULE_2_mockjs___default.a.Random;
+// let nuxtlist = nuxtSchema.nuxtlist
+// let tslist = nuxtSchema.tslist
 
 var router = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_express__["Router"])();
 
@@ -239,7 +208,7 @@ router.post('/gethead', function (req, res, next) {
   var data = {
     "data": {
       "activityId": "",
-      "endTime": "2018-3-1 17:45:0",
+      "endTime": "2018-3-2 17:45:0",
       "homeBannerUrl": "http://imagecs.quanyou.com.cn/group1/M00/00/52/rB4DMFp0TliACzt-AAA2BCwZngQ318.jpg"
     },
     "msg": "获取活动首页基本信息失败！",
@@ -250,7 +219,7 @@ router.post('/gethead', function (req, res, next) {
 
 // 获得分类
 router.post('/gettitle', function (req, res, next) {
-  var data2 = __WEBPACK_IMPORTED_MODULE_3_mockjs___default.a.mock({
+  var data2 = __WEBPACK_IMPORTED_MODULE_2_mockjs___default.a.mock({
     'data': [{
       'categoryName': '全部',
       'id': 'all'
@@ -283,58 +252,59 @@ router.post('/gettitle', function (req, res, next) {
 // 获得商品
 router.post('/getclass', function (req, res, next) {
   // console.log('activityId:', req.body.activityId, 'categoryId:', req.body.categoryId, 'pageIndex:', req.body.pageIndex)
-  var data = __WEBPACK_IMPORTED_MODULE_3_mockjs___default.a.mock({
+  var data = __WEBPACK_IMPORTED_MODULE_2_mockjs___default.a.mock({
     'data': {
-      'all|1-10': [{
-        'goodsName': Random.ctitle(3, 30),
-        'headPrice|+1': 71,
-        'memberPrice|+1': 1,
-        'marketPrice|+1': 1,
-        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-      }],
-      'cf|1-10': [{
-        'goodsName': Random.ctitle(3, 30),
-        'headPrice|+1': 1,
-        'memberPrice|+1': 1,
-        'marketPrice|+1': 1,
-        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-      }],
-      'ct|1-10': [{
-        'goodsName': Random.ctitle(3, 30),
-        'headPrice|+1': 11,
-        'memberPrice|+1': 12,
-        'marketPrice|+1': 13,
-        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-      }],
-      'yt|1-10': [{
-        'goodsName': Random.ctitle(3, 30),
-        'headPrice|+1': 21,
-        'memberPrice|+1': 22,
-        'marketPrice|+1': 23,
-        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-      }],
-      'ys|1-10': [{
-        'goodsName': Random.ctitle(3, 30),
-        'headPrice|+1': 31,
-        'memberPrice|+1': 32,
-        'marketPrice|+1': 33,
-        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-      }],
-      'et|1-10': [{
-        'goodsName': Random.ctitle(3, 30),
-        'headPrice|+1': 41,
-        'memberPrice|+1': 42,
-        'marketPrice|+1': 43,
-        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-      }],
-      'sf|1-10': [{
-        'goodsName': Random.ctitle(3, 30),
-        'headPrice|+1': 51,
-        'memberPrice|+1': 52,
-        'marketPrice|+1': 53,
-        'goodsPic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
-      }],
-      'content': Random.paragraph()
+      content: [{
+        'all|3': [{
+          'goodsName': Random.ctitle(3, 30),
+          'headPrice|+1': 71,
+          'memberPrice|+1': 1,
+          'marketPrice|+1': 1,
+          'pic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+        }],
+        'cf|3': [{
+          'goodsName': Random.ctitle(3, 30),
+          'headPrice|+1': 1,
+          'memberPrice|+1': 1,
+          'marketPrice|+1': 1,
+          'pic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+        }],
+        'ct|3': [{
+          'goodsName': Random.ctitle(3, 30),
+          'headPrice|+1': 11,
+          'memberPrice|+1': 12,
+          'marketPrice|+1': 13,
+          'pic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+        }],
+        'yt|3': [{
+          'goodsName': Random.ctitle(3, 30),
+          'headPrice|+1': 21,
+          'memberPrice|+1': 22,
+          'marketPrice|+1': 23,
+          'pic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+        }],
+        'ys|3': [{
+          'goodsName': Random.ctitle(3, 30),
+          'headPrice|+1': 31,
+          'memberPrice|+1': 32,
+          'marketPrice|+1': 33,
+          'pic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+        }],
+        'et|3': [{
+          'goodsName': Random.ctitle(3, 30),
+          'headPrice|+1': 41,
+          'memberPrice|+1': 42,
+          'marketPrice|+1': 43,
+          'pic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+        }],
+        'sf|3': [{
+          'goodsName': Random.ctitle(3, 30),
+          'headPrice|+1': 51,
+          'memberPrice|+1': 52,
+          'marketPrice|+1': 53,
+          'pic': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda')
+        }]
+      }]
     },
     msg: '成功！',
     state: 1
@@ -348,7 +318,7 @@ router.get('/getDetail', function (req, res, next) {
   //存入session
   req.session.name = req.query.name;
   req.session.password = req.query.password;
-  console.log('name:', req.session);
+  // console.log('name:', req.session)
   var url = [];
   var timeId = setInterval(function () {
     var aa = Random.image('750x750', Random.color(), '#FFF', 'png', 'heheda');
@@ -357,7 +327,7 @@ router.get('/getDetail', function (req, res, next) {
       clearInterval(timeId);
       //第一个参数是数据  第二个不知道  第三个代表缩进多少
       url = JSON.stringify(url, null, 1);
-      var data = __WEBPACK_IMPORTED_MODULE_3_mockjs___default.a.mock({
+      var data = __WEBPACK_IMPORTED_MODULE_2_mockjs___default.a.mock({
         "date": [{
           "contentsPic": url,
           "goodsDetail": {
@@ -403,7 +373,7 @@ router.get('/getDetail', function (req, res, next) {
 
 // 运费规则
 router.get('/getRule', function (req, res, next) {
-  var data = __WEBPACK_IMPORTED_MODULE_3_mockjs___default.a.mock({
+  var data = __WEBPACK_IMPORTED_MODULE_2_mockjs___default.a.mock({
     "date": {
       "deliveryFreight": [{
         "deliveryArea": "四川省-成都市-青羊区:东坡街道,光华街道",
@@ -428,7 +398,7 @@ router.get('/getRule', function (req, res, next) {
 
 // 获取参团列表
 router.get('/getGroupList', function (req, res, next) {
-  var data = __WEBPACK_IMPORTED_MODULE_3_mockjs___default.a.mock({
+  var data = __WEBPACK_IMPORTED_MODULE_2_mockjs___default.a.mock({
     "data|1-5": [{
       "activityId": "测试内容o71t", // 活动id
       "headName": "测试内容42hd", // 团长名
@@ -444,7 +414,7 @@ router.get('/getGroupList', function (req, res, next) {
 });
 
 router.get('/gettest', function (req, res, next) {
-  var data = __WEBPACK_IMPORTED_MODULE_3_mockjs___default.a.mock({
+  var data = __WEBPACK_IMPORTED_MODULE_2_mockjs___default.a.mock({
     "data": [{
       "title": Random.ctitle(3, 30)
     }, {
@@ -467,31 +437,25 @@ router.post('/posttest', function (req, res, next) {
 /* harmony default export */ exports["a"] = router;
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports) {
 
 module.exports = require("mockjs");
 
 /***/ },
-/* 11 */
-/***/ function(module, exports) {
-
-module.exports = require("mongoose");
-
-/***/ },
-/* 12 */
+/* 10 */
 /***/ function(module, exports) {
 
 module.exports = require("regenerator-runtime");
 
 /***/ },
-/* 13 */
+/* 11 */
 /***/ function(module, exports) {
 
 module.exports = require("request");
 
 /***/ },
-/* 14 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -584,7 +548,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 var app = __WEBPACK_IMPORTED_MODULE_2_express___default()();
 var host = process.env.HOST;
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3222;
 
 //使用body 不然 req.body为undifined
 app.use(__WEBPACK_IMPORTED_MODULE_3_body_parser___default.a.json());

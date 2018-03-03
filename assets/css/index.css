@@ -169,6 +169,7 @@ li {
   padding: 0 24px;
   font-size: 24px;
   text-align: left;
+  white-space: pre-wrap;
 }
 .el_window1>.el_cloose, .el_window2>.el_cloose {
   position: absolute;

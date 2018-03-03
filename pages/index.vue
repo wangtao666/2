@@ -24,7 +24,7 @@
         <div id="goods">
           <div v-for="(item, index) in goodss" class="el_goods" @click="goDetail">
             <div class="el_img">
-              <img :src="item.goodsPic" alt="">
+              <img :src="item.pic" alt="">
             </div>
             <div class="el_bewrite">
               <ul>
@@ -66,7 +66,7 @@
         <div class="el_cloose" @click="cloose">x</div>
         <p class="el_top_font">活动规则</p>
         <p>
-          {{ alldata.content }}
+          {{ gethead.rule }}
         </p>
       </div>
     </div>
@@ -140,7 +140,7 @@
       }
       // 记得return 不然不会返回结果
       return axios.all([
-        axios.post('http://127.0.0.1:3222/api/gethead', gethead),
+        axios.post('http://172.30.3.40:9086/mockjsdata/5/spell/getSpellHomeInfo', gethead),
         axios.post('http://127.0.0.1:3222/api/gettitle', gettitle),
         axios.post('http://127.0.0.1:3222/api/getclass', getclass)
       ])
@@ -159,9 +159,9 @@
                   // 头部导航内容
                   clas: gettitle.data.data,
                   // 取索引为1的对象默认展示
-                  goodss: getclass.data.data[names[0]],
+                  goodss: getclass.data.data.content[0][names[0]],
                   // 分类数据记录一下
-                  alldata: getclass.data.data
+                  alldata: getclass.data.data.content[0]
                 }
               } else {
                 return {
@@ -324,8 +324,8 @@
                 }
               }
               // 更新一下所有数据，因为这里刷新了一下，而前面的alldata是进来就请求的数据，需要更新
-              self.alldata = response.data.data
-              self.goodss = response.data.data[curtext]
+              self.alldata = response.data.data.content[0]
+              self.goodss = response.data.data.content[0][curtext]
               // 这一步很重要  不然无法实时切换loading状态 到 pull的状态
               self.$refs.loadmore.onTopLoaded()
             })
@@ -359,9 +359,9 @@
                     curtext = self.clas[i].id
                   }
                 }
-                for (let j = 0; j < response.data.data[curtext].length; j++){
+                for (let j = 0; j < response.data.data.content[0][curtext].length; j++){
                   // 将得到的数据循环后单个push到之前的数组中去
-                  self.goodss.push(response.data.data[curtext][j])
+                  self.goodss.push(response.data.data.content[0][curtext][j])
                 }
               } else {
                 self.allLoaded = true

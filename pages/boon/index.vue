@@ -4,7 +4,7 @@
     </div>
     <div class="el_personnel">
       <span class="el_avatar"></span>
-      <span class="el_jion">XX正在组团抢优惠，快来加入吧！</span>
+      <span class="el_jion">{{ nickName }}正在组团抢优惠，快来加入吧！</span>
     </div>
     <div class="el_right">
       <div class="el_timeTxt">距结束</div>
@@ -26,7 +26,7 @@
       <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" @bottom-status-change="handleBottomChange" :auto-fill="autoFill">
         <div class="el_goods" v-for="(item, index) in goodss" :key="index" @click="goDetail">
           <div class="el_img">
-            <img :src="item.goodsPic" alt=""/>
+            <img :src="item.pic" alt=""/>
           </div>
           <div class="el_bewrite">
             <ul>
@@ -65,7 +65,10 @@
         allLoaded: false,//true禁止下拉刷新
         autoFill: false,//若为真，loadmore 会自动检测并撑满其容器
         currentpageNum: 1,//当前页数
-        totalNum: 5//总页数
+        totalNum: 5,//总页数,
+        nickName: '',
+        gethead: [],// 头部图片链接
+        msg: ''// 请求错误提示消息
       }
     },
     head () {
@@ -99,8 +102,8 @@
                   curtext = self.clas[i].id
                 }
               }
-              self.alldata = response.data.data
-              self.goodss = response.data.data[curtext]
+              self.alldata = response.data.data.content[0]
+              self.goodss = response.data.data.content[0][curtext]
               self.$refs.loadmore.onTopLoaded()
             })
             .catch(function(err){
@@ -125,9 +128,9 @@
                     curtext = self.clas[i].id
                   }
                 }
-                for (let j = 0; j < response.data.data[curtext].length; j++){
+                for (let j = 0; j < response.data.data.content[0][curtext].length; j++){
                   // 将得到的数据循环后单个push到之前的数组中去
-                  self.goodss.push(response.data.data[curtext][j])
+                  self.goodss.push(response.data.data.content[0][curtext][j])
 //                  console.log(self.goodss)
                 }
               } else {
@@ -146,11 +149,6 @@
         this.bottomStatus = status;//实时更新上拉状态
       },
       start: function () {
-        let data = { 'day':2, 'hour':2, 'minute':2, 'second':2 }// 请求得到的时间
-        this.$store.state.day = data.day
-        this.$store.state.hour = data.hour
-        this.$store.state.minute = data.minute
-        this.$store.state.second = data.second// 改变store里面的时分秒数据
         this.$store.commit('increment') // 提交
       }
     },
@@ -163,11 +161,49 @@
       }
       // 得到活动id 用来查询活动详情
       self.$refs.mybox.style.width = elWidth + 30 + 'px'
-//      console.log('22222:', sessionStorage.getItem('activityId'))
+      let photo = sessionStorage.getItem('photo')
+
+      //设置团长头像
+      self.nickName = sessionStorage.getItem('nickName')
+      document.getElementsByClassName('el_avatar')[0].style.backgroundImage = 'url(' + photo + ')'
+
+      //设置banner背景图片
+      let backUrl = this.gethead.homeBannerUrl
+      document.getElementsByClassName('el_banner')[0].style.backgroundImage = 'url(' + backUrl + ')'
+      console.log(self.gethead.endTime)
+
+      // 时间格式拼接
+      let DATE = new Date
+      let year = DATE.getFullYear()
+      let month = DATE.getMonth() + 1
+      let day = DATE.getDate()
+      let hour = DATE.getHours()
+      let mint = DATE.getMinutes()
+      let S = DATE.getSeconds()
+      let currenttime = new Date(year + '-' + month + '-' + day + ' ' + hour +':'+ mint + ':' + S)// 当前时间
+      let endtime = new Date(self.gethead.endTime) // 请求来的结束时间
+      let curDay = Math.floor((endtime - currenttime) / 1000 / 60 / 60 / 24)
+      let curHour = Math.floor((endtime - currenttime) / 1000 / 60 / 60) % 24
+      let curMint = Math.floor((endtime - currenttime) / 1000 / 60 % 60)
+      let curS = (endtime - currenttime) / 1000 % 60
+      if ( endtime - currenttime > 0 ) {
+        // 改变store里面的时分秒数据
+        this.$store.state.day = curDay
+        this.$store.state.hour = curHour
+        this.$store.state.minute = curMint
+        this.$store.state.second = curS
+        console.log(curDay + '天' + curHour + '时' + curMint + '分' + curS + '秒')
+      }
       //开始倒计时
       this.start()
     },
     async asyncData () {
+      //获得头部
+      let gethead = {
+        activityId: '123',
+        shopId: '234',
+        storeId: '345'
+      }
       //获得标题
       let gettitle = {
         shopId : '123',
@@ -183,24 +219,43 @@
         storeId : '234',
       }
       return axios.all([
+        axios.post('http://172.30.3.40:9086/mockjsdata/5/spell/getSpellHomeInfo', gethead),
         axios.post('http://127.0.0.1:3222/api/gettitle', gettitle),
         axios.post('http://127.0.0.1:3222/api/getclass', getclass)
       ])
-        .then(axios.spread(function (gettitle, getclass) {
-//          console.log(reposResp.data.choose)
-          let names = [];
-          // 获得所有对象的名称
-          for (let i = 0; i < gettitle.data.data.length; i++) {
-            names.push(gettitle.data.data[i].id)
-          }
-          // 上面请求都完成后，才执行这个回调方法
-          return {
-            // 头部导航内容
-            clas: gettitle.data.data,
-            // 取索引为1的对象默认展示
-            goodss: getclass.data.data[names[0]],
-            // 分类数据记录一下
-            alldata: getclass.data.data
+        .then(axios.spread(function (gethead, gettitle, getclass) {
+          if (gethead.data.state) {
+            if (gettitle.data.state) {
+              if (getclass.data.state) {
+                let names = [];
+                // 获得所有对象的名称
+                for (let i = 0; i < gettitle.data.data.length; i++) {
+                  names.push(gettitle.data.data[i].id)
+                }
+                return {
+                  //头部信息
+                  gethead: gethead.data.data,
+                  // 头部导航内容
+                  clas: gettitle.data.data,
+                  // 取索引为1的对象默认展示
+                  goodss: getclass.data.data.content[0][names[0]],
+                  // 分类数据记录一下
+                  alldata: getclass.data.data.content[0]
+                }
+              } else {
+                return {
+                  msg : getclass.data.msg
+                }
+              }
+            }  else {
+              return {
+                msg : gettitle.data.msg
+              }
+            }
+          }  else {
+            return {
+              msg : gethead.data.msg
+            }
           }
         }))
     }
