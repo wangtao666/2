@@ -100,43 +100,43 @@
     name: 'box',
     data () {
       return {
-        active: 0,// 页签切换索引
-        clas: [],// 分类页签
-        data1: false,// 背景模态层
-        data2: false,// 引导按钮弹出框
-        data3: false,// 活动规则弹出框
-        isShow: true,// 加载动画
-        show2: false,// 底部去开团按钮
-        goodss: [],// 活动商品参数
-        alldata: [],// 活动规则
-        allLoaded: false,//true禁止下拉刷新
-        autoFill: false,//若为真，loadmore 会自动检测并撑满其容器
-        currentpageNum: 1,//当前页数
-        totalNum: 3,//总页数
-        gethead: [],// 头部图片链接
+        active: 0, // 页签切换索引
+        clas: [], // 分类页签
+        data1: false, // 背景模态层
+        data2: false, // 引导按钮弹出框
+        data3: false, // 活动规则弹出框
+        isShow: true, // 加载动画
+        show2: false, // 底部去开团按钮
+        goodss: [], // 活动商品参数
+        alldata: [], // 活动规则
+        allLoaded: false, // true禁止下拉刷新
+        autoFill: false, // 若为真，loadmore 会自动检测并撑满其容器
+        currentpageNum: 1, // 当前页数
+        totalNum: 3, // 总页数
+        gethead: [], // 头部图片链接
         msg: ''// 请求错误提示消息
       }
     },
     async asyncData () {
-      //获得头部
+      // 获得头部
       let gethead = {
         activityId: '123',
         shopId: '234',
         storeId: '345'
       }
-      //获得标题
+      // 获得标题
       let gettitle = {
-        shopId : '123',
-        storeId : '234'
+        shopId: '123',
+        storeId: '234'
       }
-      //获得商品
+      // 获得商品
       let getclass = {
-        activityId : '123',
-        categoryId : '234',
-        pageIndex : 1,
-        pageSize : 4,
-        shopId : '123',
-        storeId : '234',
+        activityId: '123',
+        categoryId: '234',
+        pageIndex: 1,
+        pageSize: 4,
+        shopId: '123',
+        storeId: '234'
       }
       // 记得return 不然不会返回结果
       return axios.all([
@@ -148,13 +148,13 @@
           if (gethead.data.state) {
             if (gettitle.data.state) {
               if (getclass.data.state) {
-                let names = [];
+                let names = []
                 // 获得所有对象的名称
                 for (let i = 0; i < gettitle.data.data.length; i++) {
                   names.push(gettitle.data.data[i].id)
                 }
                 return {
-                  //头部信息
+                  // 头部信息
                   gethead: gethead.data.data,
                   // 头部导航内容
                   clas: gettitle.data.data,
@@ -165,17 +165,17 @@
                 }
               } else {
                 return {
-                  msg : getclass.data.msg
+                  msg: getclass.data.msg
                 }
               }
-            }  else {
+            } else {
               return {
-                msg : gettitle.data.msg
+                msg: gettitle.data.msg
               }
             }
-          }  else {
+          } else {
             return {
-              msg : gethead.data.msg
+              msg: gethead.data.msg
             }
           }
         }))
@@ -209,11 +209,11 @@
       self.$refs.dailog.children[1].style.left = win1lt + 'px'
       self.$refs.dailog.children[1].style.top = win1tp + 'px'
 
-      //加载动画
+      // 加载动画
       filter.flter('box', true)
       self.isShow = true
 
-      //如果有失败的返回结果
+      // 如果有失败的返回结果
       if (self.msg) {
         self.show2 = false
         MessageBox.alert(self.msg, '')// 提示错误信息
@@ -221,7 +221,7 @@
         setTimeout(function () {
           self.isShow = false
           filter.flter('box', false)
-       }, Math.random() * 500)
+        }, Math.random() * 500)
       } else {
         self.show2 = true
         setTimeout(function () {
@@ -230,28 +230,25 @@
         }, Math.random() * 500)
       }
 
-
-
-
-      //设置banner背景图片
+      // 设置banner背景图片
       let backUrl = this.gethead.homeBannerUrl
       document.getElementsByClassName('el_banner')[0].style.backgroundImage = 'url(' + backUrl + ')'
       console.log(self.gethead.endTime)
       // 时间格式拼接
-      let DATE = new Date
+      let DATE = new Date()
       let year = DATE.getFullYear()
       let month = DATE.getMonth() + 1
       let day = DATE.getDate()
       let hour = DATE.getHours()
       let mint = DATE.getMinutes()
       let S = DATE.getSeconds()
-      let currenttime = new Date(year + '-' + month + '-' + day + ' ' + hour +':'+ mint + ':' + S)// 当前时间
+      let currenttime = new Date(year + '-' + month + '-' + day + ' ' + hour + ':' + mint + ':' + S)// 当前时间
       let endtime = new Date(self.gethead.endTime) // 请求来的结束时间
       let curDay = Math.floor((endtime - currenttime) / 1000 / 60 / 60 / 24)
       let curHour = Math.floor((endtime - currenttime) / 1000 / 60 / 60) % 24
       let curMint = Math.floor((endtime - currenttime) / 1000 / 60 % 60)
       let curS = (endtime - currenttime) / 1000 % 60
-      if ( endtime - currenttime > 0 ) {
+      if (endtime - currenttime > 0) {
         // 改变store里面的时分秒数据
         this.$store.state.day = curDay
         this.$store.state.hour = curHour
@@ -259,27 +256,27 @@
         this.$store.state.second = curS
         console.log(curDay + '天' + curHour + '时' + curMint + '分' + curS + '秒')
       }
-      //开始倒计时
+      // 开始倒计时
       this.start()
     },
     methods: {
-      check: function (e, att) {// 顶部导航切换
+      check: function (e, att) { // 顶部导航切换
         this.active = e
         // 动态的属性名不能用点的，要data[att]这样调用！！！！！！坑！ 因为所有数据都已经请求过来了，所以直接用，不用再发请求!!!
         this.goodss = this.alldata[att]
         this.allLoaded = false
         this.currentpageNum = 1
       },
-      seeinform: function () {// 活动规则与模态框显示
+      seeinform: function () { // 活动规则与模态框显示
         this.data1 = true
         this.data3 = true
       },
-      cloose: function () {// 关闭所有弹出框
+      cloose: function () { // 关闭所有弹出框
         this.data1 = false
         this.data2 = false
         this.data3 = false
       },
-      openwin1: function (e) {// 引导  参团 我的团 按钮点击事件
+      openwin1: function (e) { // 引导  参团 我的团 按钮点击事件
 //        console.log('123:', e.target.innerText)
         if (e.target.innerText === '引导') {
           this.data1 = true
@@ -290,36 +287,36 @@
           location.href = '/myGroups'
         }
       },
-      gotuan: function () {// 去开团按钮点击
+      gotuan: function () { // 去开团按钮点击
         location.href = 'success'
       },
-      cantuan: function () {// 参团按钮点击
+      cantuan: function () { // 参团按钮点击
         location.href = 'participate'
       },
-      goDetail: function () {// 跳转到商品详情页
+      goDetail: function () { // 跳转到商品详情页
         location.href = 'groupDetails'
       },
-      loadTop: function () {// 到顶部后的下拉刷新
-        //下拉刷新
+      loadTop: function () { // 到顶部后的下拉刷新
+        // 下拉刷新
         let self = this
         this.currentpageNum = 1
         this.allLoaded = false
-        setTimeout (() => {
+        setTimeout(() => {
           let getclass = {
-            activityId : '123',
-            categoryId : '234',
-            pageIndex : 1,
-            pageSize : 4,
-            shopId : '123',
-            storeId : '234'
+            activityId: '123',
+            categoryId: '234',
+            pageIndex: 1,
+            pageSize: 4,
+            shopId: '123',
+            storeId: '234'
           }
           axios.post('/api/getclass', getclass)
-            .then(function(response){
+            .then(function (response) {
               // 让当前被选中的导航 在下拉刷新后一样的呈现出当前导航对应的内容
               let stext = document.getElementsByClassName('active')[0].innerText
               let curtext = ''
-              for (let i = 0; i<self.clas.length; i++) {
-                if (self.clas[i].categoryName == stext) {
+              for (let i = 0; i < self.clas.length; i++) {
+                if (self.clas[i].categoryName === stext) {
                   curtext = self.clas[i].id
                 }
               }
@@ -329,56 +326,56 @@
               // 这一步很重要  不然无法实时切换loading状态 到 pull的状态
               self.$refs.loadmore.onTopLoaded()
             })
-            .catch(function(err){
+            .catch(function (err) {
               console.log(err)
             })
         }, 500)
       },
-      loadBottom: function () {// 到底部后的上拉加载分页
+      loadBottom: function () { // 到底部后的上拉加载分页
         // 加载更多数据 加载完成时的事件
         this.currentpageNum++
 //        console.log('this.current1:', this.currentpageNum)
         let self = this
         setTimeout(() => {
           let getclass = {
-            activityId : '123',
-            categoryId : '234',
-            pageIndex : 1,
-            pageSize : 4,
-            shopId : '123',
-            storeId : '234'
+            activityId: '123',
+            categoryId: '234',
+            pageIndex: 1,
+            pageSize: 4,
+            shopId: '123',
+            storeId: '234'
           }
           axios.post('/api/getclass', getclass)
-            .then(function(response){
+            .then(function (response) {
               // 让当前被选中的导航 在下拉刷新后一样的呈现出当前导航对应的内容
               let stext = document.getElementsByClassName('active')[0].innerText
               let curtext = ''
-              if (self.totalNum  >= self.currentpageNum) {
-                for (let i = 0; i<self.clas.length; i++) {
-                  if (self.clas[i].categoryName == stext) {
+              if (self.totalNum >= self.currentpageNum) {
+                for (let i = 0; i < self.clas.length; i++) {
+                  if (self.clas[i].categoryName === stext) {
                     curtext = self.clas[i].id
                   }
                 }
-                for (let j = 0; j < response.data.data.content[0][curtext].length; j++){
+                for (let j = 0; j < response.data.data.content[0][curtext].length; j++) {
                   // 将得到的数据循环后单个push到之前的数组中去
                   self.goodss.push(response.data.data.content[0][curtext][j])
                 }
               } else {
                 self.allLoaded = true
-                MessageBox.alert('已经加载完全部内容', '')//提示弹框
+                MessageBox.alert('已经加载完全部内容', '')// 提示弹框
               }
               // 这一步很重要  不然无法实时切换loading状态 到 pull的状态
               self.$refs.loadmore.onBottomLoaded()
             })
-            .catch(function(err){
+            .catch(function (err) {
               console.log(err)
             })
         }, 500)
       },
-      handleBottomChange: function (status){// 实时更新拖动状态
-        this.bottomStatus = status;
+      handleBottomChange: function (status) { // 实时更新拖动状态
+        this.bottomStatus = status
       },
-      start: function () {// 倒计时
+      start: function () { // 倒计时
         this.$store.commit('increment') // 提交
       }
     }

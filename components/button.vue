@@ -8,7 +8,7 @@
 
   export default {
     name: 'btn',
-    props: ["show2"],
+    props: ['show2'],
     data () {
       return {
         btn: 'el_btn'

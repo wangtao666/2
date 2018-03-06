@@ -14,21 +14,21 @@ router.get('/getmsg', (req, res, next) => {
   request('http://10.10.1.191:3666/getall', function (error, response, body) {
     console.log('error:', error) // 返回错误信息
     console.log('statusCode:', response && response.statusCode) // 返回请求的状态码
-    //console.log('body:', body) // 返回回来的数据
+    // console.log('body:', body)  返回回来的数据
     res.json(body)
-  });
+  })
 })
 
-//获得头部信息
+// 获得头部信息
 router.post('/gethead', (req, res, next) => {
   let data = {
-    "data": {
-      "activityId": "",
-      "endTime": "2018-3-2 17:45:0",
-      "homeBannerUrl": "http://imagecs.quanyou.com.cn/group1/M00/00/52/rB4DMFp0TliACzt-AAA2BCwZngQ318.jpg"
+    'data': {
+      'activityId': '',
+      'endTime': '2017-3-7 17:45:0',
+      'homeBannerUrl': 'http://imagecs.quanyou.com.cn/group1/M00/00/52/rB4DMFp0TliACzt-AAA2BCwZngQ318.jpg'
     },
-    "msg": "获取活动首页基本信息失败！",
-    "state": 1
+    'msg': '获取活动首页基本信息失败！',
+    'state': 1
   }
   res.json(data)
 })
@@ -40,7 +40,7 @@ router.post('/gettitle', (req, res, next) => {
       {
         'categoryName': '全部',
         'id': 'all'
-      },{
+      }, {
         'categoryName': '厨房',
         'id': 'cf'
       }, {
@@ -60,9 +60,9 @@ router.post('/gettitle', (req, res, next) => {
         'id': 'sf'
       }
     ],
-    msg : '失败o ！',
+    msg: '失败o ！',
     state: 1
-  });
+  })
   res.json(data2)
   // console.log(data2)
 })
@@ -71,7 +71,7 @@ router.post('/gettitle', (req, res, next) => {
 router.post('/getclass', (req, res, next) => {
   // console.log('activityId:', req.body.activityId, 'categoryId:', req.body.categoryId, 'pageIndex:', req.body.pageIndex)
   let data = Mock.mock({
-    'data' : ({
+    'data': ({
       content: [{
         'all|3': [{
           'goodsName': Random.ctitle(3, 30),
@@ -124,7 +124,7 @@ router.post('/getclass', (req, res, next) => {
         }]
       }]
     }),
-    msg : '成功！',
+    msg: '成功！',
     state: 1
   })
   res.json(data)
@@ -133,58 +133,46 @@ router.post('/getclass', (req, res, next) => {
 
 // 商品详情页
 router.get('/getDetail', (req, res, next) => {
-  //存入session
+  // 存入session
   req.session.name = req.query.name
   req.session.password = req.query.password
   // console.log('name:', req.session)
-  let url = [];
+  let url = []
   let timeId = setInterval(function () {
-    let aa = Random.image('750x750', Random.color(), '#FFF', 'png', 'heheda');
-    url.push(aa);
-    if(url.length > 10){
-      clearInterval(timeId);
-      //第一个参数是数据  第二个不知道  第三个代表缩进多少
-      url = JSON.stringify(url, null, 1);
+    let aa = Random.image('750x750', Random.color(), '#FFF', 'png', 'heheda')
+    url.push(aa)
+    if (url.length > 10) {
+      clearInterval(timeId)
+      // 第一个参数是数据  第二个不知道  第三个代表缩进多少
+      url = JSON.stringify(url, null, 1)
       let data = Mock.mock({
-        "date": [{
-          "contentsPic": url,
-          "goodsDetail": {
-            "goodsName": Random.ctitle(3, 30),
-            "headPrice": 100, //团长价
-            "marketPrice": 300, //市场价
-            "pics": Random.ctitle(3, 10),
-            "spellPrice": 200 //拼团价
+        'date': [{
+          'contentsPic': url,
+          'goodsDetail': {
+            'goodsName': Random.ctitle(3, 30),
+            'headPrice': 100, // 团长价
+            'marketPrice': 300, // 市场价
+            'pics': Random.ctitle(3, 10),
+            'spellPrice': 200 // 拼团价
           },
-          "isShowBuy": false,
-          "showAttributeList": [{
-            "attributeName": "颜色",
-            "attributeOptionList": ["蓝色", "红色", "绿色"]
+          'isShowBuy': false,
+          'showAttributeList': [{
+            'attributeName': '颜色',
+            'attributeOptionList': ['一', '二', '三']
           }, {
-            "attributeName": "抽屉",
-            "attributeOptionList": ["一抽", "两抽", "三抽"]
+            'attributeName': '抽屉',
+            'attributeOptionList': ['一', '二', '三']
           }, {
-            "attributeName": "品牌",
-            "attributeOptionList": ["好", "中", "坏"]
-          }, {
-            "attributeName": "几台",
-            "attributeOptionList": ["一", "二", "三"]
-          }, {
-            "attributeName": "几台",
-            "attributeOptionList": ["一", "二", "三"]
-          }, {
-            "attributeName": "几台",
-            "attributeOptionList": ["一", "二", "三"]
-          }, {
-            "attributeName": "几台",
-            "attributeOptionList": ["一", "二", "三"]
+            'attributeName': '品牌',
+            'attributeOptionList': ['一', '二', '三']
           }]
         }],
-        "msg": "请求成功！",
-        "state": 1
+        'msg': '请求成功！',
+        'state': 1
       })
       res.json(data)
     }
-  },50);
+  }, 50)
 
   // console.log(JSON.stringify(data))
 })
@@ -192,26 +180,26 @@ router.get('/getDetail', (req, res, next) => {
 // 运费规则
 router.get('/getRule', (req, res, next) => {
   let data = Mock.mock({
-    "date": {
-    "deliveryFreight": [
-      {
-        "deliveryArea": "四川省-成都市-青羊区:东坡街道,光华街道",
-        "deliveryPrice": "0-10元运装费为0.2元;10.01-1000元运装费为0元;"
-      }, {
-        "deliveryArea": "四川省-成都市-青羊区:东坡街道,光华街道",
-        "deliveryPrice": "0-10元运装费为0.2元;10.01-1000元运装费为0元;"
-      }, {
-        "deliveryArea": "四川省-成都市-青羊区:东坡街道,光华街道",
-        "deliveryPrice": "0-10元运装费为0.2元;10.01-1000元运装费为0元;"
-      }, {
-        "deliveryArea": "四川省-成都市-青羊区:东坡街道,光华街道",
-        "deliveryPrice": "0-10元运装费为0.2元;10.01-1000元运装费为0元;"
-      }
-    ],
-      "sendDetail": "测试内容bf49"
-  },
-    "msg": "测试内容p1qv",
-    "state": 35587
+    'date': {
+      'deliveryFreight': [
+        {
+          'deliveryArea': '四川省-成都市-青羊区:东坡街道,光华街道',
+          'deliveryPrice': '0-10元运装费为0.2元;10.01-1000元运装费为0元;'
+        }, {
+          'deliveryArea': '四川省-成都市-青羊区:东坡街道,光华街道',
+          'deliveryPrice': '0-10元运装费为0.2元;10.01-1000元运装费为0元;'
+        }, {
+          'deliveryArea': '四川省-成都市-青羊区:东坡街道,光华街道',
+          'deliveryPrice': '0-10元运装费为0.2元;10.01-1000元运装费为0元;'
+        }, {
+          'deliveryArea': '四川省-成都市-青羊区:东坡街道,光华街道',
+          'deliveryPrice': '0-10元运装费为0.2元;10.01-1000元运装费为0元;'
+        }
+      ],
+      'sendDetail': '测试内容bf49'
+    },
+    'msg': '测试内容p1qv',
+    'state': 35587
   })
   res.json(data)
 })
@@ -219,38 +207,38 @@ router.get('/getRule', (req, res, next) => {
 // 获取参团列表
 router.get('/getGroupList', (req, res, next) => {
   let data = Mock.mock({
-    "data|1-5": [
+    'data|1-5': [
       {
-        "activityId": "测试内容o71t",// 活动id
-        "headName": "测试内容42hd",// 团长名
-        "joinId": "测试内容3e7q",// 组团id
-        "joinSpellNum": 83820,// 参团人数
-        "spellImg": Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda'),// 图片url
-        "spellName": Random.ctitle(3, 30)// 团名称
+        'activityId': '测试内容o71t', // 活动id
+        'headName': '测试内容42hd', // 团长名
+        'joinId': '测试内容3e7q', // 组团id
+        'joinSpellNum': 83820, // 参团人数
+        'spellImg': Random.image('180x180', Random.color(), '#FFF', 'png', 'heheda'), // 图片url
+        'spellName': Random.ctitle(3, 30)// 团名称
       }
     ],
-    "msg": "成功",
-    "state": 73773
+    'msg': '成功',
+    'state': 73773
   })
   res.json(data)
 })
 
 router.get('/gettest', (req, res, next) => {
   let data = Mock.mock({
-    "data" : [{
-      "title" : Random.ctitle(3, 30)
+    'data': [{
+      'title': Random.ctitle(3, 30)
     }, {
-      "title" : Random.ctitle(3, 30)
+      'title': Random.ctitle(3, 30)
     }, {
-      "title" : Random.ctitle(3, 30)
+      'title': Random.ctitle(3, 30)
     }, {
-      "title" : Random.ctitle(3, 30)
+      'title': Random.ctitle(3, 30)
     }]
   })
   res.json(data)
 })
 
-router.post('/posttest',(req, res, next) => {
+router.post('/posttest', (req, res, next) => {
   // req.headers['content-type'] = "application/x-www-form-urlencoded"
   // console.log('333333333333:', req.body)
   res.send('1')

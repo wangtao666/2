@@ -4,14 +4,13 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 
-
 import api from './api'
 
 const app = express()
 const host = process.env.HOST
 const port = process.env.PORT || 3222
 
-//使用body 不然 req.body为undifined
+// 使用body 不然 req.body为undifined
 app.use(bodyParser.json())
 
 app.use(cookieParser())

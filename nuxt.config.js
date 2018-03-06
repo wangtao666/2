@@ -13,7 +13,7 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://unpkg.com/element-ui/lib/theme-default/index.css'}
+      { rel: 'stylesheet', href: 'https://unpkg.com/element-ui/lib/theme-default/index.css' }
     ]
   },
   build: {
@@ -28,6 +28,13 @@ module.exports = {
       }
     }
   },
+  root: true,
+  parser: 'babel-eslint',
+  env: {
+    browser: true,
+    node: true
+  },
+  extends: 'standard',
   /*
   ** Customize the progress bar color
   */
@@ -40,20 +47,19 @@ module.exports = {
     'mint-ui',
     './assets/js/base.js'
   ],
-  babel:{
-    "plugins": [["component", [
+  babel: {
+    'plugins': [['component', [
       {
-        "libraryName": "mint-ui",
-        "style": true
+        'libraryName': 'mint-ui',
+        'style': true
       }
     ]]],
     comments: true
   },
   plugins: [
-    { src: './plugins/mint-ui', ssr: true },
-    { src: './assets/js/base.js', ssr: false  }
+    { src: './plugins/mint-ui', ssr: true }
   ],
-  css:[
+  css: [
     'assets/main.css'
   ]
 }

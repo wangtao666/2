@@ -53,7 +53,7 @@
       }
     },
 //    接收来自父组件的值
-    props: ["showdia", "Picurl", "goodsName", "headPrice", "Attrdata"],
+    props: ['showdia', 'Picurl', 'goodsName', 'headPrice', 'Attrdata'],
     mounted () {
       if (document.getElementById('gawAttributeBox').children.length > 2) {
         document.getElementById('gawAttributeBox').style.height = '500px'
@@ -62,7 +62,7 @@
     methods: {
       close: function () {
 //        点击关闭按钮时 向父组件发送一个参数 childtoparent为约定的一个名称 父组件接收该值时，监听事件名称要与之相同
-        this.$emit("childtoparent","false")
+        this.$emit('childtoparent', 'false')
         let Curtexts = []
         let Choosenum = document.getElementById('gawBuyNum').value
         let Iscur = document.getElementsByClassName('cur')
@@ -70,19 +70,19 @@
           Curtexts.push(Iscur[i].innerText)
         }
         let Curobj = {
-          "texts": Curtexts,
-          "nums": Choosenum
+          'texts': Curtexts,
+          'nums': Choosenum
         } // 封装一个对象传递过去 包含选中的类型 和 选择的数量
-        this.$emit("childtoparent2", Curobj)
+        this.$emit('childtoparent2', Curobj)
       },
       addcur: function (e, list) {
         let childs = e.target.parentNode.childNodes
-        for ( var i = 0; i < childs.length; i++ ) {
-          if ( i !== list) {
-            childs[i].classList.remove("cur")
+        for (let i = 0; i < childs.length; i++) {
+          if (i !== list) {
+            childs[i].classList.remove('cur')
 //            console.log('siblings:', childs[i])
           } else {
-            childs[i].classList.add("cur")
+            childs[i].classList.add('cur')
 //            console.log('self:', childs[i])
           }
         }
@@ -95,13 +95,13 @@
       enternum: function (e) {
         if (e.target.value > 5) {
           e.target.value = 5
-        } else if (e.target.value == 0) {
+        } else if (e.target.value === 0) {
           alert('必须大于0件')
         }
       },
       adds: function () {
         document.getElementById('gawBuyNum').value++
-        if ( document.getElementById('gawBuyNum').value > 5 ) {
+        if (document.getElementById('gawBuyNum').value > 5) {
           document.getElementById('gawBuyNum').value = 5
         }
       },
@@ -114,7 +114,7 @@
         })// 提示弹框
         setTimeout(() => {
           document.getElementsByClassName('v-modal')[0].click()// 隐藏弹框
-        },1000)
+        }, 1000)
         this.close()
       }
     }

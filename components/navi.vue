@@ -13,8 +13,8 @@ export default {
       navs: 'el_navs',
       clear: 'clear',
       activex2: '',
-      active: 0
-      ,clas: [{
+      active: 0,
+      clas: [{
         choose: '厨房'
       }, {
         choose: '餐厅'

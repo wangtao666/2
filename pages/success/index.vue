@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-  import axios from 'axios'
+//  import axios from 'axios'
   import Load from '../../components/load'
   import filter from '../../assets/js/filter'
   export default {
@@ -36,11 +36,11 @@
     components: { Load },
     mounted () {
       let self = this
-      //加载动画
+      // 加载动画
       setTimeout(function () {
         self.isShow = false
         filter.flter('success')
-      }, Math.random() * 100)
+      }, Math.random() * 50)
     }
   }
 </script>

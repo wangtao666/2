@@ -61,13 +61,13 @@
         active: 0,
         clas: [],
         goodss: [],
-        alldata:[],
-        allLoaded: false,//true禁止下拉刷新
-        autoFill: false,//若为真，loadmore 会自动检测并撑满其容器
-        currentpageNum: 1,//当前页数
-        totalNum: 5,//总页数,
+        alldata: [],
+        allLoaded: false, // true禁止下拉刷新
+        autoFill: false, // 若为真，loadmore 会自动检测并撑满其容器
+        currentpageNum: 1, // 当前页数
+        totalNum: 5, // 总页数,
         nickName: '',
-        gethead: [],// 头部图片链接
+        gethead: [], // 头部图片链接
         msg: ''// 请求错误提示消息
       }
     },
@@ -87,18 +87,18 @@
         location.href = '/groupDetails'
       },
       loadTop: function () {
-        //下拉刷新
+        // 下拉刷新
         let self = this
         this.currentpageNum = 1
         this.allLoaded = false
-        setTimeout (() => {
+        setTimeout(() => {
           axios.post('/api/getclass')
-            .then(function(response){
+            .then(function (response) {
               // 让当前被选中的导航 在下拉刷新后一样的呈现出当前导航对应的内容
               let stext = document.getElementsByClassName('active')[0].innerText
               let curtext = ''
-              for (let i = 0; i<self.clas.length; i++) {
-                if (self.clas[i].categoryName == stext) {
+              for (let i = 0; i < self.clas.length; i++) {
+                if (self.clas[i].categoryName === stext) {
                   curtext = self.clas[i].id
                 }
               }
@@ -106,7 +106,7 @@
               self.goodss = response.data.data.content[0][curtext]
               self.$refs.loadmore.onTopLoaded()
             })
-            .catch(function(err){
+            .catch(function (err) {
               console.log(err)
             })
         }, 500)
@@ -118,17 +118,17 @@
         let self = this
         setTimeout(() => {
           axios.post('/api/getclass')
-            .then(function(response){
+            .then(function (response) {
               // 让当前被选中的导航 在下拉刷新后一样的呈现出当前导航对应的内容
               let stext = document.getElementsByClassName('active')[0].innerText
               let curtext = ''
-              if (self.totalNum  >= self.currentpageNum) {
-                for (let i = 0; i<self.clas.length; i++) {
-                  if (self.clas[i].categoryName == stext) {
+              if (self.totalNum >= self.currentpageNum) {
+                for (let i = 0; i < self.clas.length; i++) {
+                  if (self.clas[i].categoryName === stext) {
                     curtext = self.clas[i].id
                   }
                 }
-                for (let j = 0; j < response.data.data.content[0][curtext].length; j++){
+                for (let j = 0; j < response.data.data.content[0][curtext].length; j++) {
                   // 将得到的数据循环后单个push到之前的数组中去
                   self.goodss.push(response.data.data.content[0][curtext][j])
 //                  console.log(self.goodss)
@@ -140,13 +140,13 @@
               // 这一步很重要  不然无法实时切换loading状态 到 pull的状态
               self.$refs.loadmore.onBottomLoaded()
             })
-            .catch(function(err){
+            .catch(function (err) {
               console.log(err)
             })
         }, 500)
       },
-      handleBottomChange: function (status){
-        this.bottomStatus = status;//实时更新上拉状态
+      handleBottomChange: function (status) {
+        this.bottomStatus = status// 实时更新上拉状态
       },
       start: function () {
         this.$store.commit('increment') // 提交
@@ -163,30 +163,30 @@
       self.$refs.mybox.style.width = elWidth + 30 + 'px'
       let photo = sessionStorage.getItem('photo')
 
-      //设置团长头像
+      // 设置团长头像
       self.nickName = sessionStorage.getItem('nickName')
       document.getElementsByClassName('el_avatar')[0].style.backgroundImage = 'url(' + photo + ')'
 
-      //设置banner背景图片
+      // 设置banner背景图片
       let backUrl = this.gethead.homeBannerUrl
       document.getElementsByClassName('el_banner')[0].style.backgroundImage = 'url(' + backUrl + ')'
       console.log(self.gethead.endTime)
 
       // 时间格式拼接
-      let DATE = new Date
+      let DATE = new Date()
       let year = DATE.getFullYear()
       let month = DATE.getMonth() + 1
       let day = DATE.getDate()
       let hour = DATE.getHours()
       let mint = DATE.getMinutes()
       let S = DATE.getSeconds()
-      let currenttime = new Date(year + '-' + month + '-' + day + ' ' + hour +':'+ mint + ':' + S)// 当前时间
+      let currenttime = new Date(year + '-' + month + '-' + day + ' ' + hour + ':' + mint + ':' + S)// 当前时间
       let endtime = new Date(self.gethead.endTime) // 请求来的结束时间
       let curDay = Math.floor((endtime - currenttime) / 1000 / 60 / 60 / 24)
       let curHour = Math.floor((endtime - currenttime) / 1000 / 60 / 60) % 24
       let curMint = Math.floor((endtime - currenttime) / 1000 / 60 % 60)
       let curS = (endtime - currenttime) / 1000 % 60
-      if ( endtime - currenttime > 0 ) {
+      if (endtime - currenttime > 0) {
         // 改变store里面的时分秒数据
         this.$store.state.day = curDay
         this.$store.state.hour = curHour
@@ -194,29 +194,29 @@
         this.$store.state.second = curS
         console.log(curDay + '天' + curHour + '时' + curMint + '分' + curS + '秒')
       }
-      //开始倒计时
+      // 开始倒计时
       this.start()
     },
     async asyncData () {
-      //获得头部
+      // 获得头部
       let gethead = {
         activityId: '123',
         shopId: '234',
         storeId: '345'
       }
-      //获得标题
+      // 获得标题
       let gettitle = {
-        shopId : '123',
-        storeId : '234'
+        shopId: '123',
+        storeId: '234'
       }
-      //获得商品
+      // 获得商品
       let getclass = {
-        activityId : '123',
-        categoryId : '234',
-        pageIndex : 1,
-        pageSize : 4,
-        shopId : '123',
-        storeId : '234',
+        activityId: '123',
+        categoryId: '234',
+        pageIndex: 1,
+        pageSize: 4,
+        shopId: '123',
+        storeId: '234'
       }
       return axios.all([
         axios.post('http://172.30.3.40:9086/mockjsdata/5/spell/getSpellHomeInfo', gethead),
@@ -227,13 +227,13 @@
           if (gethead.data.state) {
             if (gettitle.data.state) {
               if (getclass.data.state) {
-                let names = [];
+                let names = []
                 // 获得所有对象的名称
                 for (let i = 0; i < gettitle.data.data.length; i++) {
                   names.push(gettitle.data.data[i].id)
                 }
                 return {
-                  //头部信息
+                  // 头部信息
                   gethead: gethead.data.data,
                   // 头部导航内容
                   clas: gettitle.data.data,
@@ -244,17 +244,17 @@
                 }
               } else {
                 return {
-                  msg : getclass.data.msg
+                  msg: getclass.data.msg
                 }
               }
-            }  else {
+            } else {
               return {
-                msg : gettitle.data.msg
+                msg: gettitle.data.msg
               }
             }
-          }  else {
+          } else {
             return {
-              msg : gethead.data.msg
+              msg: gethead.data.msg
             }
           }
         }))

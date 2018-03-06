@@ -157,7 +157,7 @@
     },
     beforeMount () {
       let self = this
-      //加载动画
+      // 加载动画
       filter.flter('wrap', true)
       self.isShow2 = true
       setTimeout(function () {
@@ -166,26 +166,26 @@
       }, Math.random() * 500)
     },
     methods: {
-      loadTop: function () {// 加载更多数据  可自行写事件(拉到顶部时)
-        this.$refs.loadmore.onTopLoaded();
+      loadTop: function () { // 加载更多数据  可自行写事件(拉到顶部时)
+        this.$refs.loadmore.onTopLoaded()
         let self = this
 //        this.goodss[0].title.push(this.goodss[0].title)
         axios.get('http://127.0.0.1:3222/api/getmsg')
-          .then(function(response){
+          .then(function (response) {
             self.goodss = response.data.cf
           })
-          .catch(function(err){
-            console.log(err);
-          });
+          .catch(function (err) {
+            console.log(err)
+          })
       },
-      loadBottom: function () {// 加载更多数据 加载完成时的事件
-        this.allLoaded = true;// 若数据已全部获取完毕
-        this.$refs.loadmore.onBottomLoaded();
+      loadBottom: function () { // 加载更多数据 加载完成时的事件
+        this.allLoaded = true// 若数据已全部获取完毕
+        this.$refs.loadmore.onBottomLoaded()
       },
-      showdial: function () {// 当点击属性按钮时 赋值showdia为true
+      showdial: function () { // 当点击属性按钮时 赋值showdia为true
         this.showdia = true
       },
-      showchildmsg: function (data) {// 接收来自子组件的值，并赋值给showdia
+      showchildmsg: function (data) { // 接收来自子组件的值，并赋值给showdia
         this.showdia = data
 //        console.log('dialog目前的状态:', data)
       },
@@ -198,7 +198,7 @@
       Torule: function () {
         location.href = 'rule'
       },
-      addCard: function () {// 加入购物车
+      addCard: function () { // 加入购物车
         let self = this
         if (document.getElementById('table_a')) {
           if (document.getElementById('table_a').children[0].children.length > 0) {
@@ -212,7 +212,7 @@
             })// 提示弹框
             setTimeout(() => {
               document.getElementsByClassName('v-modal')[0].click()// 隐藏弹框
-            },1000)
+            }, 1000)
           }
         } else {
           MessageBox({
@@ -223,7 +223,7 @@
           })// 提示弹框
           setTimeout(() => {
             document.getElementsByClassName('v-modal')[0].click()// 隐藏弹框
-          },1000)
+          }, 1000)
         }
       }
     }

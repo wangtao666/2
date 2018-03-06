@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     start: function () {
-      let data = { 'day':1, 'hour':1, 'minute':1, 'second':1 }// 请求得到的时间
+      let data = { 'day': 1, 'hour': 1, 'minute': 1, 'second': 1 } // 请求得到的时间
       this.$store.state.day = data.day
       this.$store.state.hour = data.hour
       this.$store.state.minute = data.minute

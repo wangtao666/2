@@ -19,7 +19,7 @@
   import groups from '../../components/myGroups/groups'
   export default {
     name: 'noGroups',
-    data() {
+    data () {
       return {
         isA: false,
         isB: true

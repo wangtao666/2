@@ -51,19 +51,19 @@
         goodss: {},
         data1: false,
         isShow: true,
-        allLoaded: false,//true禁止下拉刷新
-        autoFill: false,//若为真，loadmore 会自动检测并撑满其容器
-        currentpageNum: 1,//当前页数
-        totalNum: 3,//总页数,
+        allLoaded: false, // true禁止下拉刷新
+        autoFill: false, // 若为真，loadmore 会自动检测并撑满其容器
+        currentpageNum: 1, // 当前页数
+        totalNum: 3, // 总页数
         photo: '',
         nickName: ''
       }
     },
     async asyncData () {
-      //定义查询参数
+      // 定义查询参数
       let params = {
-        activityId : 'SYM',
-        buyerId : '123',
+        activityId: 'SYM',
+        buyerId: '123',
         pageIndex: 1,
         pageSize: 2
       }
@@ -73,12 +73,12 @@
         url: 'http://172.30.3.40:9086/mockjsdata/5/spell/getTeamList',
         data: params
       })
-        .then(function(response) {
+        .then(function (response) {
           return {
-            goodss: response.data.data.content,
+            goodss: response.data.data.content
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error)
         })
     },
@@ -97,16 +97,16 @@
       gosee: function () {
         location.href = 'boon'
       },
-      loadTop: function () {// 到顶部后的下拉刷新
-        //下拉刷新
+      loadTop: function () { // 到顶部后的下拉刷新
+        // 下拉刷新
         let self = this
         this.currentpageNum = 1
         this.allLoaded = false
-        setTimeout (() => {
-          //定义查询参数
+        setTimeout(() => {
+          // 定义查询参数
           let params = {
-            activityId : 'SYM',
-            buyerId : '123',
+            activityId: 'SYM',
+            buyerId: '123',
             pageIndex: 1,
             pageSize: 2,
             shopId: 'wqeq',
@@ -117,16 +117,16 @@
             url: 'http://172.30.3.40:9086/mockjsdata/5/spell/getTeamList',
             data: params
           })
-            .then(function(response) {
+            .then(function (response) {
               self.goodss = response.data.data.content
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console(error)
             })
           self.$refs.loadmore.onTopLoaded()
         }, 500)
       },
-      loadBottom: function () {// 到底部后的上拉加载分页
+      loadBottom: function () { // 到底部后的上拉加载分页
         // 加载更多数据 加载完成时的事件
         this.currentpageNum++
 //        console.log('this.current1:', this.currentpageNum)
@@ -135,8 +135,8 @@
           self.$refs.loadmore.onBottomLoaded()
         }, 500)
       },
-      handleBottomChange: function (status){// 实时更新拖动状态
-        this.bottomStatus = status;
+      handleBottomChange: function (status) { // 实时更新拖动状态
+        this.bottomStatus = status
       }
     },
     mounted () {
@@ -145,11 +145,11 @@
       let self = this
       this.$refs.dailog.style.left = elWidth + 'px'
       this.$refs.dailog.style.top = elHeight + 'px'
-      //加载动画
+      // 加载动画
       setTimeout(function () {
         self.isShow = false
         filter.flter('participate')
-      }, Math.random() * 500)
+      }, Math.random() * 50)
       sessionStorage.setItem('photo', self.goodss[0].photo)
       sessionStorage.setItem('nickName', self.goodss[0].nickName)
       console.log('33333:', self.goodss[0].photo, self.goodss[0].nickName)// 还没完成
@@ -163,5 +163,5 @@
 }
 </script>
 <style>
-    @import "~assets/css/participate.css"
+    @import '~assets/css/participate.css'
 </style>
