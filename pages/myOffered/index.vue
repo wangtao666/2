@@ -15,6 +15,7 @@
 </template>
 
 <script>
+
   import groups from '../../components/myGroups/groups'
   import underWay from '../../components/myGroups/underWay'
   import offeredSuccess from '../../components/myGroups/offeredSuccess'
