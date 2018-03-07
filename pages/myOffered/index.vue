@@ -26,7 +26,7 @@
       'groups': groups,
       'underWay': underWay,
       'offeredSuccess': offeredSuccess,
-      'collageFailure': collageFailure,
+      'collageFailure': collageFailure
     },
     data() {
       return {
